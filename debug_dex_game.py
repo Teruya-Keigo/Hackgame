@@ -1,0 +1,483 @@
+import asyncio
+import json
+import math
+from dataclasses import dataclass, field
+from decimal import Decimal, getcontext
+from typing import Any, Dict, List, Optional, Set, Tuple
+
+
+getcontext().prec = 40
+
+
+TOKENS = ("A", "B", "C")
+PAIRS = ("A/B", "B/C", "C/A")
+
+
+@dataclass
+class Order:
+    order_id: str
+    user_id: str
+    kind: str  # "limit" | "market" | "cancel"
+    side: str  # "buy" | "sell"
+    pair: str
+    amount: float
+    price: float
+    timestamp: int
+    nonce: int
+    gas_price: float
+    target_order_id: Optional[str] = None
+
+
+@dataclass
+class DexEngine:
+    balances: Dict[str, Dict[str, float]] = field(default_factory=dict)
+    orderbook: Dict[str, List[Order]] = field(default_factory=lambda: {p: [] for p in PAIRS})
+    reserved: Dict[str, Dict[str, float]] = field(default_factory=dict)
+    order_state: Dict[str, str] = field(default_factory=dict)
+    order_by_id: Dict[str, Order] = field(default_factory=dict)
+    cancelled_once: Set[str] = field(default_factory=set)
+    queue_jump_marks: Set[str] = field(default_factory=set)
+    debug_log: List[str] = field(default_factory=list)
+    bug_flags: Dict[str, int] = field(
+        default_factory=lambda: {
+            "double_refund": 0,
+            "queue_jump": 0,
+            "penny": 0,
+            # legacy counters kept for compatibility with older clients/logics
+            "rounding": 0,
+            "race": 0,
+            "overflow": 0,
+        }
+    )
+
+    def __post_init__(self) -> None:
+        if not self.balances:
+            self.balances = {
+                "player": {"A": 1000.0, "B": 1000.0, "C": 1000.0},
+                "maker": {"A": 100000.0, "B": 100000.0, "C": 100000.0},
+            }
+        if not self.reserved:
+            self.reserved = {"player": {"A": 0.0, "B": 0.0, "C": 0.0}, "maker": {"A": 0.0, "B": 0.0, "C": 0.0}}
+
+    def _log(self, msg: str) -> None:
+        self.debug_log.append(msg)
+
+    def _split_pair(self, pair: str) -> Tuple[str, str]:
+        base, quote = pair.split("/")
+        return base, quote
+
+    def _ensure_user(self, user_id: str) -> None:
+        if user_id not in self.balances:
+            self.balances[user_id] = {"A": 0.0, "B": 0.0, "C": 0.0}
+            self.reserved[user_id] = {"A": 0.0, "B": 0.0, "C": 0.0}
+
+    def _reserve_limit_funds(self, order: Order) -> bool:
+        base, quote = self._split_pair(order.pair)
+        if order.side == "buy":
+            need = order.amount * order.price
+            token = quote
+        else:
+            need = order.amount
+            token = base
+
+        bal = self.balances[order.user_id][token]
+        if bal < need:
+            self._log(
+                f"[reserve] insufficient user={order.user_id} token={token} "
+                f"have={bal:.18f} need={need:.18f} order={order.order_id}"
+            )
+            return False
+
+        self.balances[order.user_id][token] -= need
+        self.reserved[order.user_id][token] += need
+        self._log(
+            f"[reserve] ok user={order.user_id} token={token} locked={need:.18f} "
+            f"bal={self.balances[order.user_id][token]:.18f} res={self.reserved[order.user_id][token]:.18f}"
+        )
+        return True
+
+    def _release_limit_funds(self, order: Order) -> None:
+        base, quote = self._split_pair(order.pair)
+        if order.side == "buy":
+            amount = order.amount * order.price
+            token = quote
+        else:
+            amount = order.amount
+            token = base
+
+        self.reserved[order.user_id][token] -= amount
+        self.balances[order.user_id][token] += amount
+        self._log(
+            f"[refund] user={order.user_id} token={token} amount={amount:.18f} "
+            f"bal={self.balances[order.user_id][token]:.18f} res={self.reserved[order.user_id][token]:.18f}"
+        )
+        # Deliberate bug detector: refund called twice for same reserve window.
+        if self.reserved[order.user_id][token] < -1e-9:
+            self.bug_flags["double_refund"] += 1
+            self._log(
+                f"[refund-bug] double refund detected user={order.user_id} token={token} "
+                f"reserved_negative={self.reserved[order.user_id][token]:.18f}"
+            )
+
+    def _unsafe_risk_check(self, amount: float, leverage: float) -> float:
+        # Intentionally unstable boundary calculation.
+        notional = amount * leverage * 1_000_000_000.0
+        risk_value = math.log(max(notional, 1.0)) * (leverage ** 14)
+
+        if amount > 1e150 and leverage >= 1e8:
+            # Deliberate overflow-to-NaN bug path.
+            risk_value = float("inf") - float("inf")
+            self.bug_flags["overflow"] += 1
+            self._log("[overflow-bug] inf-inf triggered, risk=NaN")
+
+        if math.isnan(risk_value):
+            self._log("[overflow-bug] NaN detected, fallback to -1.0 (invalid sign flip)")
+            return -1.0
+        if math.isinf(risk_value):
+            self._log("[overflow] +inf risk seen, clamping to huge number")
+            return 1e309
+        return risk_value
+
+    def _swap_rate(self, pair: str) -> float:
+        # Slightly inconsistent fixed rates to allow cumulative drift.
+        rates = {"A/B": 1.0000000007, "B/C": 1.0000000005, "C/A": 1.0000000004}
+        return rates[pair]
+
+    def _market_swap(self, user_id: str, pair: str, amount: float) -> float:
+        base, quote = self._split_pair(pair)
+        rate = self._swap_rate(pair)
+
+        if self.balances[user_id][base] < amount:
+            self._log(
+                f"[market] insufficient base user={user_id} pair={pair} "
+                f"amount={amount:.18f} have={self.balances[user_id][base]:.18f}"
+            )
+            return 0.0
+
+        self.balances[user_id][base] -= amount
+        out = amount * rate
+        out = round(out, 12)  # Intentional precision loss.
+        fee = out * 0.001
+        out_after_fee = out - fee
+
+        # Deliberate hidden exploit for exact tiny amount or human-friendly magic value.
+        if abs(amount - 0.0000000013) < 1e-15 or abs(amount - 1.0000000013) < 1e-12:
+            out_after_fee += 1e-10
+            self.bug_flags["penny"] += 1
+            self.bug_flags["rounding"] += 1
+            self._log(
+                f"[penny-bug] epsilon bonus injected pair={pair} amount={amount:.18f} bonus=1e-10"
+            )
+
+        self.balances[user_id][quote] += out_after_fee
+        self._log(
+            f"[market] user={user_id} {base}->{quote} in={amount:.18f} rate={rate:.12f} "
+            f"out_raw={out:.18f} out_fee={out_after_fee:.18f}"
+        )
+        return out_after_fee
+
+    async def _place_limit(self, order: Order, leverage: float) -> None:
+        self._ensure_user(order.user_id)
+        risk = self._unsafe_risk_check(order.amount, leverage)
+        self._log(f"[limit] risk_check order={order.order_id} risk={risk}")
+
+        if not self._reserve_limit_funds(order):
+            self.order_state[order.order_id] = "rejected"
+            return
+
+        self.order_state[order.order_id] = "open"
+        self.order_by_id[order.order_id] = order
+        self.orderbook[order.pair].append(order)
+        self._log(
+            f"[limit] open order={order.order_id} pair={order.pair} side={order.side} "
+            f"amount={order.amount:.18f} price={order.price:.18f}"
+        )
+
+        # Intentionally race-prone: no lock, yields before match.
+        await asyncio.sleep(0)
+        await self._try_match(order.pair)
+
+    async def _place_market(self, order: Order) -> None:
+        self._ensure_user(order.user_id)
+        risk = self._unsafe_risk_check(order.amount, leverage=1.0)
+        self._log(f"[market] risk_check order={order.order_id} risk={risk}")
+        self._market_swap(order.user_id, order.pair, order.amount)
+
+    async def _cancel(self, order: Order) -> None:
+        target_id = order.target_order_id or ""
+        target = self.order_by_id.get(target_id)
+        if not target:
+            self._log(f"[cancel] missing target={target_id} cancel_id={order.order_id}")
+            return
+
+        # Anti-pattern: stale check + yield creates race.
+        current = self.order_state.get(target_id, "unknown")
+        if current == "open":
+            await asyncio.sleep(0)
+            self.order_state[target_id] = "cancelled"
+            self.cancelled_once.add(target_id)
+            self._release_limit_funds(target)
+            self._log(f"[cancel] done target={target_id}")
+        else:
+            self._log(f"[cancel] skipped target={target_id} state={current}")
+
+    async def _try_match(self, pair: str) -> None:
+        orders = self.orderbook[pair]
+        buys = [o for o in orders if o.side == "buy"]
+        sells = [o for o in orders if o.side == "sell"]
+        if not buys or not sells:
+            return
+
+        # Intentionally simplistic and unsafe: first-first match only.
+        b = buys[0]
+        s = sells[0]
+        if b.price < s.price:
+            return
+
+        # Deliberate queue-order bug: older nonce can be skipped by ordering/gas side-effects.
+        buy_nonce_candidates = [o.nonce for o in buys if o.timestamp == b.timestamp]
+        if len(buy_nonce_candidates) >= 2 and b.nonce > min(buy_nonce_candidates):
+            marker = f"buy:{pair}:{b.timestamp}:{min(buy_nonce_candidates)}->{b.nonce}"
+            if marker not in self.queue_jump_marks:
+                self.queue_jump_marks.add(marker)
+                self.bug_flags["queue_jump"] += 1
+                self._log(
+                    f"[queue-jump-bug] buy queue bypass detected pair={pair} chosen_nonce={b.nonce} "
+                    f"expected_nonce={min(buy_nonce_candidates)}"
+                )
+        sell_nonce_candidates = [o.nonce for o in sells if o.timestamp == s.timestamp]
+        if len(sell_nonce_candidates) >= 2 and s.nonce > min(sell_nonce_candidates):
+            marker = f"sell:{pair}:{s.timestamp}:{min(sell_nonce_candidates)}->{s.nonce}"
+            if marker not in self.queue_jump_marks:
+                self.queue_jump_marks.add(marker)
+                self.bug_flags["queue_jump"] += 1
+                self._log(
+                    f"[queue-jump-bug] sell queue bypass detected pair={pair} chosen_nonce={s.nonce} "
+                    f"expected_nonce={min(sell_nonce_candidates)}"
+                )
+
+        qty = min(b.amount, s.amount)
+        base, quote = self._split_pair(pair)
+        trade_value = qty * s.price
+
+        # Bug: does not re-check cancelled after yield.
+        b_before = self.order_state.get(b.order_id, "unknown")
+        s_before = self.order_state.get(s.order_id, "unknown")
+        await asyncio.sleep(0)
+
+        self.reserved[b.user_id][quote] -= trade_value
+        self.balances[b.user_id][base] += qty
+        self.reserved[s.user_id][base] -= qty
+        self.balances[s.user_id][quote] += trade_value
+
+        self.order_state[b.order_id] = "filled"
+        self.order_state[s.order_id] = "filled"
+
+        self._log(
+            f"[match] pair={pair} buy={b.order_id} sell={s.order_id} qty={qty:.18f} "
+            f"value={trade_value:.18f} b_state={self.order_state.get(b.order_id)} "
+            f"s_state={self.order_state.get(s.order_id)}"
+        )
+
+        if b_before == "cancelled" or s_before == "cancelled":
+            self.bug_flags["race"] += 1
+            self._log(
+                f"[race-bug] cancelled-before-match detected buy_before={b_before} sell_before={s_before}"
+            )
+        elif b.order_id in self.cancelled_once or s.order_id in self.cancelled_once:
+            self.bug_flags["race"] += 1
+            self._log(
+                f"[race-bug] cancel-history-match detected buy_cancelled={b.order_id in self.cancelled_once} "
+                f"sell_cancelled={s.order_id in self.cancelled_once}"
+            )
+
+        # Remove matched orders if present.
+        self.orderbook[pair] = [o for o in orders if o.order_id not in (b.order_id, s.order_id)]
+
+    def _reorder_batch(self, batch: List[Order], algo: str) -> List[Order]:
+        if algo == "greedy":
+            # High gas first, then timestamp.
+            return sorted(batch, key=lambda o: (-o.gas_price, o.timestamp, o.nonce))
+        if algo == "pairwise":
+            # Pair-cluster first, then nonce.
+            return sorted(batch, key=lambda o: (o.pair, o.timestamp, o.nonce))
+        if algo == "simulated_annealing":
+            # Fake annealing: intentionally unstable ordering by sin(timestamp).
+            return sorted(batch, key=lambda o: (math.sin(o.timestamp), -o.gas_price, o.nonce))
+        return sorted(batch, key=lambda o: (o.timestamp, o.nonce))
+
+    async def process_batch(
+        self,
+        batch_json: str,
+        *,
+        algo: str = "greedy",
+        leverage: float = 1.0,
+    ) -> Dict[str, Any]:
+        raw = json.loads(batch_json)
+        incoming = raw.get("orders", [])
+        parsed: List[Order] = []
+
+        for i, item in enumerate(incoming):
+            parsed.append(
+                Order(
+                    order_id=item.get("order_id", f"o{i}"),
+                    user_id=item.get("user_id", "player"),
+                    kind=item.get("kind", "market"),
+                    side=item.get("side", "buy"),
+                    pair=item.get("pair", "A/B"),
+                    amount=float(item.get("amount", 0.0)),
+                    price=float(item.get("price", 1.0)),
+                    timestamp=int(item.get("timestamp", 0)),
+                    nonce=int(item.get("nonce", i)),
+                    gas_price=float(item.get("gas_price", 0.0)),
+                    target_order_id=item.get("target_order_id"),
+                )
+            )
+
+        ordered = self._reorder_batch(parsed, algo)
+        self._log(f"[batch] size={len(ordered)} algo={algo} leverage={leverage}")
+
+        # Group by same millisecond timestamp to provoke races.
+        grouped: Dict[int, List[Order]] = {}
+        for o in ordered:
+            grouped.setdefault(o.timestamp, []).append(o)
+
+        for ts in sorted(grouped):
+            tasks = []
+            same_ts_orders = grouped[ts]
+            self._log(f"[batch] dispatch ts={ts} count={len(same_ts_orders)}")
+            for o in same_ts_orders:
+                if o.kind == "limit":
+                    tasks.append(asyncio.create_task(self._place_limit(o, leverage=leverage)))
+                elif o.kind == "market":
+                    tasks.append(asyncio.create_task(self._place_market(o)))
+                elif o.kind == "cancel":
+                    tasks.append(asyncio.create_task(self._cancel(o)))
+                else:
+                    self._log(f"[batch] unknown kind={o.kind} order={o.order_id}")
+            if tasks:
+                await asyncio.gather(*tasks)
+
+        snapshot = {
+            "balances": self.balances,
+            "reserved": self.reserved,
+            "order_state": self.order_state,
+            "bug_flags": self.bug_flags,
+            "debug_log": self.debug_log,
+        }
+        return snapshot
+
+
+@dataclass
+class Validator:
+    engine: DexEngine
+
+    def score(self) -> Dict[str, Any]:
+        # Uses Decimal only in scoring output while engine remains float-based.
+        b = self.engine.bug_flags
+        score = Decimal(0)
+        score += Decimal(b["double_refund"]) * Decimal("220")
+        score += Decimal(b["queue_jump"]) * Decimal("150")
+        score += Decimal(b["penny"]) * Decimal("35")
+
+        hints: List[str] = []
+        if b["double_refund"] > 0:
+            hints.append("同じ注文IDに cancel を同時刻で重ねると、返金が二重化しやすい。")
+        if b["queue_jump"] > 0:
+            hints.append("同じ timestamp(ms) で nonce が若い注文と高gas注文を衝突させる。")
+        if b["penny"] > 0:
+            hints.append("数量 1.0000000013 の小数取引を繰り返すと小銭が増幅する。")
+        if not hints:
+            hints.append("同時刻注文・cancel重ね・小数量ループの3系統を順番に試す。")
+
+        return {
+            "score": str(score),
+            "bugs": dict(b),
+            "hints": hints,
+            "log_tail": self.engine.debug_log[-25:],
+        }
+
+
+async def run_game(batch_json: str, algo: str = "greedy", leverage: float = 1.0) -> Dict[str, Any]:
+    engine = DexEngine()
+    await engine.process_batch(batch_json, algo=algo, leverage=leverage)
+    return Validator(engine).score()
+
+
+if __name__ == "__main__":
+    sample = {
+        "orders": [
+            {
+                "order_id": "l1",
+                "user_id": "player",
+                "kind": "limit",
+                "side": "buy",
+                "pair": "A/B",
+                "amount": 10,
+                "price": 1.2,
+                "timestamp": 1700000000000,
+                "nonce": 1,
+                "gas_price": 50,
+            },
+            {
+                "order_id": "l2",
+                "user_id": "maker",
+                "kind": "limit",
+                "side": "sell",
+                "pair": "A/B",
+                "amount": 10,
+                "price": 1.1,
+                "timestamp": 1700000000000,
+                "nonce": 2,
+                "gas_price": 49,
+            },
+            {
+                "order_id": "c1",
+                "kind": "cancel",
+                "target_order_id": "l1",
+                "timestamp": 1700000000000,
+                "nonce": 3,
+                "gas_price": 48,
+                "amount": 0,
+            },
+            {
+                "order_id": "m1",
+                "user_id": "player",
+                "kind": "market",
+                "side": "sell",
+                "pair": "A/B",
+                "amount": 0.0000000013,
+                "price": 1.0,
+                "timestamp": 1700000000001,
+                "nonce": 4,
+                "gas_price": 51,
+            },
+            {
+                "order_id": "m2",
+                "user_id": "player",
+                "kind": "market",
+                "side": "sell",
+                "pair": "B/C",
+                "amount": 0.0000000013,
+                "price": 1.0,
+                "timestamp": 1700000000002,
+                "nonce": 5,
+                "gas_price": 51,
+            },
+            {
+                "order_id": "m3",
+                "user_id": "player",
+                "kind": "market",
+                "side": "sell",
+                "pair": "C/A",
+                "amount": 0.0000000013,
+                "price": 1.0,
+                "timestamp": 1700000000003,
+                "nonce": 6,
+                "gas_price": 51,
+            },
+        ]
+    }
+
+    result = asyncio.run(run_game(json.dumps(sample), algo="greedy", leverage=1e8))
+    print(json.dumps(result, indent=2, ensure_ascii=False))

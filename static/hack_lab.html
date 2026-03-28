@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ハッキング拡張システム</title>
+    <link rel="stylesheet" href="/static/hack_lab.css" />
+  </head>
+  <body>
+    <div class="lab-shell">
+      <header class="lab-topbar">
+        <div>
+          <div class="lab-title">HACKING EXTENSION SYSTEM</div>
+          <div class="lab-subtitle">目的: 目押しの認証範囲をコード編集で広げる</div>
+        </div>
+        <a class="back-btn" href="/">ゲームに戻る</a>
+      </header>
+
+      <main class="lab-grid">
+        <section class="lab-panel guide-panel">
+          <h2>まず何をする？</h2>
+          <ol>
+            <li>「テンプレートを読み込む」を押す</li>
+            <li>`HackScript` で `probeBudget` / `stabilityBias` / `entropyGate` を調整する</li>
+            <li>必要ならストアでヒントやモジュールを購入する</li>
+            <li>「検証して保存」でゲームへ戻る</li>
+          </ol>
+
+          <div class="guide-block">
+            <div class="guide-title">初心者向けの目安</div>
+            <div class="guide-line">`probeBudget`: 1〜5（高いほど推定が安定）</div>
+            <div class="guide-line">`stabilityBias`: 0〜100（高いほど判定幅が広がりやすい）</div>
+            <div class="guide-line">`entropyGate`: 0〜100（sweet spot への寄り方に影響）</div>
+          </div>
+
+          <div class="guide-block">
+            <div class="guide-title">HackScript の書き方</div>
+            <div class="guide-line">関数型スタイルと `class` スタイルの両方をパースできます。</div>
+            <pre class="guide-code">chapter chapter1 {
+  probeBudget(3);
+  stabilityBias(72);
+  entropyGate(48);
+  focusMode("safe");
+}</pre>
+            <pre class="guide-code">class Chapter2 extends ExploitProfile {
+  probeBudget = 4;
+  stabilityBias = 58;
+  entropyGate = 61;
+  focusMode = "balanced";
+}</pre>
+          </div>
+
+          <div class="guide-block">
+            <div class="guide-title">編集ルール</div>
+            <div class="guide-line">`sweetLeft` / `sweetWidth` の直接指定は禁止</div>
+            <div class="guide-line">1ボタンでの sweet spot 自動特定は廃止</div>
+            <div class="guide-line">`focusMode`: `safe`(安定) / `balanced`(標準) / `greedy`(高配当寄り)</div>
+            <div class="guide-line">コメントは `//`, `#`, `/* ... */` が使えます</div>
+            <div class="guide-line">攻略は「コード調整 + ストア購入」で段階解放</div>
+          </div>
+
+          <h2>ハッキングストア</h2>
+          <div id="point-pill" class="point-pill">所持ポイント: 0pt</div>
+          <div id="store-list" class="store-list"></div>
+          <div class="guide-block">
+            <div class="guide-title">購入済み機能</div>
+            <div id="owned-list" class="owned-list"></div>
+          </div>
+          <div id="hint-console" class="hint-console"></div>
+
+          <div id="status-banner" class="status-banner">
+            ここで保存した設定は、本編の目押し判定にすぐ反映されます。
+          </div>
+        </section>
+
+        <section class="lab-panel editor-panel">
+          <h2>コード編集</h2>
+          <textarea id="hack-code" spellcheck="false" placeholder="// まずはテンプレートを読み込む"></textarea>
+          <div class="snippet-actions">
+            <button id="apply-safe-btn">購入済みコード: Safeテンプレート</button>
+            <button id="apply-rush-btn">購入済みコード: Rushテンプレート</button>
+          </div>
+          <div class="editor-actions">
+            <button id="load-template-btn">テンプレートを読み込む</button>
+            <button id="validate-btn">検証だけする</button>
+            <button id="save-btn" class="save-btn">検証して保存して戻る</button>
+          </div>
+          <pre id="editor-log" class="editor-log"></pre>
+        </section>
+
+        <section class="lab-panel preview-panel">
+          <h2>反映イメージ</h2>
+          <div id="preview-list" class="preview-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/hack_lab.js"></script>
+  </body>
+</html>
