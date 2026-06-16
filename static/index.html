@@ -3,213 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vending Glitch RPG</title>
+    <title>Security Learning Game</title>
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
-    <div id="intro-overlay" class="intro-overlay">
-      <div class="intro-card">
-        <div class="intro-kicker">ROLEPLAY START</div>
-        <h1>あなたはハッカーです</h1>
-        <p>
-          まずは「おまけが出る自販機」をハックします。
-          この自販機は、特定タイミングでボタンを押すと
-          本来より多く商品が出るスキがあります。
-        </p>
-        <p>
-          目的は3つです。<br />
-          1. おつり二重取りを見つける。<br />
-          2. 順番すり抜けを見つける。<br />
-          3. 小銭ふくらみを見つける。
-        </p>
-        <p>
-          初期ポイントは <strong>1000pt</strong>。<br />
-          ハッキング1回につき <strong>100pt</strong> 消費。成功時は大きく返還、失敗時は没収されます。
-        </p>
-        <button id="start-btn" class="btn-primary large">ミッション開始</button>
-      </div>
-    </div>
-
-    <div id="celebration" class="celebration hidden">
-      <div class="celebration-card">
-        <div class="celebration-title">正解！ バグ発見！</div>
-        <div id="celebration-detail"></div>
-      </div>
-    </div>
-
-    <div id="unlock-overlay" class="unlock-overlay hidden">
-      <div class="unlock-card">
-        <div class="unlock-title">やりましたね！ 新しい機能が解放されました</div>
-        <div id="unlock-message" class="unlock-message"></div>
-        <div class="unlock-section">今できること</div>
-        <ul id="unlock-features" class="unlock-list"></ul>
-        <div class="unlock-section">これで狙えるバグ</div>
-        <ul id="unlock-bugs" class="unlock-list"></ul>
-        <button id="unlock-close" class="btn-primary">次へ進む</button>
-      </div>
-    </div>
-
-    <div id="game-over-overlay" class="game-over-overlay hidden">
-      <div class="game-over-card">
-        <div class="game-over-title">GAME OVER</div>
-        <div id="game-over-summary" class="game-over-summary">
-          所持ポイントが尽きました。
-        </div>
-        <button id="game-over-restart" class="btn-primary">最初からやり直す</button>
-      </div>
-    </div>
-
     <div class="app-shell">
-      <header id="topbar" class="topbar">
-        <div class="title-block">
-          <div class="title-main">VENDING GLITCH OPS</div>
-          <div class="title-sub">「何をすると得するか」を見抜くハッカー訓練</div>
+      <header class="stage-header">
+        <div class="stage-heading">
+          <div id="stage-path" class="stage-path"></div>
+          <h1 id="stage-title" class="stage-title"></h1>
+          <p id="stage-goal" class="stage-goal"></p>
         </div>
-        <div class="topbar-right">
-          <a id="hack-nav-btn" class="hack-nav-btn" href="/static/hack_lab.html">ハッキング拡張システムへ</a>
-          <div class="stat-pills">
-            <span id="chapter-pill">Chapter 1 / 3</span>
-            <span id="score-pill">所持ポイント: 1000pt</span>
-            <span id="bugs-pill">発見: 0 / 3</span>
-            <span id="hack-pill">認証幅: C1 20% / C2 14% / C3 12%</span>
-          </div>
+        <div class="stage-progress-panel">
+          <div id="progress-label" class="progress-label"></div>
+          <div id="progress-dots" class="progress-dots"></div>
+          <button id="reset-progress" class="reset-progress">進行をリセット</button>
         </div>
       </header>
 
-      <main class="grid-layout">
-        <section id="story-panel" class="panel story-panel">
-          <h2>ストーリーガイド</h2>
-          <div class="objective-card">
-            <div class="obj-label">今やること</div>
-            <h3 id="obj-title"></h3>
-            <p id="obj-why"></p>
-            <ol id="obj-steps"></ol>
-            <div id="obj-reward" class="obj-reward"></div>
-          </div>
-          <div id="story-feed" class="story-feed"></div>
-        </section>
-
-        <section id="center-panel" class="panel center-panel">
-          <h2 id="console-title">ハック操作盤</h2>
-          <div class="machine-board">
-            <div class="flow-guide">
-              <div class="flow-guide-title">いま何をしているか（かんたん表示）</div>
-              <div class="flow-row">
-                <div id="flow-step-1" class="flow-step active">
-                  <div class="flow-step-no">1</div>
-                  <div class="flow-step-main">ボタンを押す</div>
-                  <div class="flow-step-sub">実行スタート</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div id="flow-step-2" class="flow-step">
-                  <div class="flow-step-no">2</div>
-                  <div class="flow-step-main">条件を合わせる</div>
-                  <div class="flow-step-sub">数字やタイミングを調整</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div id="flow-step-3" class="flow-step">
-                  <div class="flow-step-no">3</div>
-                  <div class="flow-step-main">結果を見る</div>
-                  <div class="flow-step-sub">ポイント返還 or 再挑戦</div>
-                </div>
-              </div>
-              <div id="flow-status" class="flow-status">現在: 待機中（ミッション開始を押してください）</div>
-            </div>
-            <div id="timing-pane" class="timing-pane hidden">
-              <div class="timing-title">SPACE目押しチャレンジ</div>
-              <div id="timing-track" class="timing-track">
-                <div id="timing-sweet" class="timing-sweet"></div>
-                <div id="timing-cursor" class="timing-cursor"></div>
-              </div>
-              <div id="timing-text">中央ゾーンで SPACE を押すと成功</div>
-            </div>
-          </div>
-
-          <div class="controls">
-            <div class="control-note">
-              難しい設定は不要です。作戦は自動で選ばれます。
-              あなたは「実行ボタン」と「SPACEのタイミング」に集中してください。
-              1回の実行ごとに100ptを使い、成功時は大きく返還、失敗時は没収です。
-              注文量は Chapter 3（小銭ふくらみ）で使います。
-              全ミッションクリア後は、下の自由検証パラメータで攻略を調整できます。
-            </div>
-            <label>
-              注文量（魔法の数字候補）
-              <input id="amount-input" type="number" step="0.0000000001" value="1.0" />
-            </label>
-            <div id="advanced-controls" class="advanced-controls">
-              <div class="advanced-title">クリア後の自由検証モード</div>
-              <label>
-                狙うバグ
-                <span class="param-help">何を再検証するか選びます。</span>
-                <select id="target-bug-select">
-                  <option value="double_refund">おつり二重取り</option>
-                  <option value="queue_jump">順番すり抜け</option>
-                  <option value="penny">小銭ふくらみ</option>
-                </select>
-              </label>
-              <label>
-                同時性ズレ (ms)
-                <span class="param-help">2つの操作の時間差です。0msに近いほど「同時押し」になります。</span>
-                <input id="sync-jitter-input" type="number" min="0" max="5" step="1" value="0" />
-              </label>
-              <label>
-                ガス差 (queue用)
-                <span class="param-help">後から来た注文に与える優先度の差です。大きいほど割り込みやすくなります。</span>
-                <input id="gas-gap-input" type="number" min="1" max="150" step="1" value="55" />
-              </label>
-              <label>
-                ループ回数 (penny用)
-                <span class="param-help">同じ交換を繰り返す回数です。多いほど小さなズレを増幅しやすくなります。</span>
-                <input id="penny-cycles-input" type="number" min="1" max="8" step="1" value="3" />
-              </label>
-            </div>
-            <div id="advanced-help" class="advanced-help"></div>
-            <div class="button-row">
-              <button id="inject-race-btn">小銭ループを準備</button>
-              <button id="primary-btn" class="btn-primary">100円入れる</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="result-panel" class="panel result-panel">
-          <h2>結果と意味</h2>
-          <div id="result-status" class="result-status">
-            まだ実行していません。まず「100円入れる」を押してください。
-          </div>
-          <div class="result-block">
-            <div id="result-types">今回の発見: -</div>
-            <div id="result-plain">
-              ここに「何が起きたか」を、技術用語なしで表示します。
-            </div>
-            <div id="result-next">次の一手: ボタンを押して1回試す</div>
-          </div>
-          <div id="visual-hint" class="visual-hint hidden">
-            <div class="visual-hint-title">不足ポイント（視覚ヒント）</div>
-            <div id="visual-hint-grid" class="visual-hint-grid"></div>
-          </div>
-          <div class="found-list">
-            <div class="found-item" data-bug="double_refund">おつり二重取り</div>
-            <div class="found-item" data-bug="queue_jump">順番すり抜け</div>
-            <div class="found-item" data-bug="penny">小銭ふくらみ</div>
-          </div>
-          <div class="log-caption">やさしい実況ログ: いま何が起きているかを一行で説明します。</div>
-          <div id="log-stream" class="log-stream"></div>
-        </section>
-      </main>
-    </div>
-
-    <div id="panel-tour" class="panel-tour hidden">
-      <div id="panel-tour-card" class="panel-tour-card">
-        <div id="panel-tour-title" class="panel-tour-title"></div>
-        <div id="panel-tour-text" class="panel-tour-text"></div>
-        <div class="panel-tour-actions">
-          <button id="panel-tour-next" class="btn-primary">次へ</button>
-          <button id="panel-tour-skip">スキップ</button>
+      <section class="chapter-banner">
+        <div class="chapter-copy">
+          <div id="chapter-kicker" class="chapter-kicker"></div>
+          <div id="chapter-note" class="chapter-note"></div>
         </div>
-      </div>
+        <div class="lab-lock">Search Console は第3章で解放中 / Hack Lab は第4章以降で解放予定</div>
+      </section>
+
+      <main class="main-grid">
+        <section class="panel mission-panel">
+          <h2 id="mission-title">今回やること</h2>
+          <div id="mission-card" class="mission-card"></div>
+          <div id="input-region" class="input-region"></div>
+        </section>
+
+        <section class="panel visual-panel">
+          <h2 id="visual-title">メイン表示</h2>
+          <div id="visual-region" class="visual-region"></div>
+          <div id="timeline-section" class="timeline-section">
+            <div id="timeline-heading" class="timeline-heading">タイムライン</div>
+            <div id="timeline-region" class="timeline-region"></div>
+          </div>
+        </section>
+
+        <aside class="panel result-panel">
+          <h2 id="result-title">結果と差分</h2>
+          <div id="result-region" class="result-region"></div>
+          <div id="hint-region" class="hint-region"></div>
+          <details class="detail-panel">
+            <summary>詳細メモ</summary>
+            <div id="detail-region" class="detail-region"></div>
+          </details>
+        </aside>
+      </main>
+
+      <footer class="action-bar">
+        <div id="feedback-region" class="feedback-region"></div>
+        <div id="action-buttons" class="action-buttons"></div>
+      </footer>
     </div>
 
-    <script src="/static/app.js"></script>
+    <script type="module" src="/static/app.js"></script>
   </body>
 </html>
