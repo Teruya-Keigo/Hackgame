@@ -1,0 +1,14 @@
+{
+  "name": "security-game",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "python3 server.py",
+    "test:py": "python3 -m unittest test_debug_dex_game.py",
+    "test:js": "node test_stage_core.mjs",
+    "build:itch": "node scripts/build_itch.mjs",
+    "verify:itch": "node scripts/verify_itch_build.mjs",
+    "serve:itch": "npm run build:itch && python3 -m http.server 8090 --directory public_build/itch",
+    "zip:itch": "npm run build:itch && npm run verify:itch && node scripts/zip_itch.mjs"
+  }
+}
