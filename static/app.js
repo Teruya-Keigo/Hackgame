@@ -5,13 +5,14 @@ import {
   createInitialSearchConsoleState,
   createInitialStageState,
   executeSearchProgram,
+  getAdvancedStageDefinition,
   getStageMeta,
   getSearchConsoleSamples,
   runStageAction,
   simulateChapter3Scenario,
 } from "./stage_core.mjs"
 
-const STORAGE_KEY = "security_game_stage_journey_v8"
+const STORAGE_KEY = "security_game_stage_journey_v9"
 const GAUGE_CYCLE_MS = 2400
 
 const VISUAL_TITLES = {
@@ -310,6 +311,22 @@ function statCard(label, value, sub = "", accent = "normal") {
       ${sub ? `<div class="stat-sub">${escapeHtml(sub)}</div>` : ""}
     </div>
   `
+}
+
+function planSourceLabel(source) {
+  const labels = {
+    gui: "GUI",
+    dsl: "Duel DSL",
+    template: "Template",
+  }
+  return labels[source] || source || "-"
+}
+
+function runtimeScoreAccent(score) {
+  if (!score) return "normal"
+  if (score.grade === "S" || score.grade === "A") return "good"
+  if (score.grade === "D") return "warn"
+  return "normal"
 }
 
 function listCard(title, items, accent = "normal") {
@@ -638,6 +655,247 @@ function inlineChoiceButton(action, value, label, selected) {
   `
 }
 
+function advancedDefinition(stageId) {
+  return getAdvancedStageDefinition(stageId)
+}
+
+function advancedOptionCards(definition, state) {
+  return `
+    <div class="advanced-option-list">
+      ${definition.options
+        .map((option) => {
+          const selected = state.selectedOptionId === option.id
+          const trial = state.runs?.[option.id]
+          return `
+            <button
+              class="advanced-option ${selected ? "selected" : ""} ${trial?.blocked ? "warn" : trial ? "done" : ""}"
+              data-action="select_advanced_option"
+              data-value="${escapeHtml(option.id)}"
+            >
+              <div class="advanced-option-head">
+                <span>${escapeHtml(option.label)}</span>
+                <span>${trial ? `score ${escapeHtml(String(trial.score))}` : "未実行"}</span>
+              </div>
+              <div class="advanced-option-summary">${escapeHtml(option.summary || "")}</div>
+              <div class="advanced-option-metrics">
+                <span>gain ${escapeHtml(String(option.gain ?? 0))}</span>
+                <span>detect ${escapeHtml(String(option.detection ?? 0))}</span>
+                <span>rate ${Math.round((option.successRate ?? 0) * 100)}%</span>
+              </div>
+            </button>
+          `
+        })
+        .join("")}
+    </div>
+  `
+}
+
+function advancedTrialTable(rows) {
+  if (!rows?.length) return `<div class="history-empty">まだ実行結果はありません。</div>`
+  return `
+    <div class="trial-table-wrap">
+      <table class="trial-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>候補</th>
+            <th>gain</th>
+            <th>detect</th>
+            <th>score</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map(
+              (row, index) => `
+                <tr class="${row.id === rows.bestId ? "best-row" : ""}">
+                  <td>${index + 1}</td>
+                  <td>${escapeHtml(row.label)}</td>
+                  <td>${escapeHtml(String(row.gain))}</td>
+                  <td>${escapeHtml(String(row.detection))}</td>
+                  <td>${escapeHtml(String(row.score))}</td>
+                  <td>${row.blocked ? "制限" : "通過"}</td>
+                </tr>
+              `
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `
+}
+
+function advancedBestCard(bestTrial) {
+  if (!bestTrial) {
+    return `
+      <div class="best-result-card empty">
+        <div class="best-result-title">Best Candidate</div>
+        <div class="best-result-empty">まだ評価結果はありません。</div>
+      </div>
+    `
+  }
+  return `
+    <div class="best-result-card">
+      <div class="best-result-title">Best Candidate</div>
+      <div class="best-result-main">${escapeHtml(String(bestTrial.score))}</div>
+      <div class="best-result-line">${escapeHtml(bestTrial.label)}</div>
+      <div class="best-result-line">gain ${escapeHtml(String(bestTrial.gain))} / detect ${escapeHtml(String(bestTrial.detection))}</div>
+      <div class="best-result-line">${escapeHtml(bestTrial.summary || "")}</div>
+    </div>
+  `
+}
+
+function advancedInputHtml(stage, state, definition) {
+  const selected = definition.options.find((option) => option.id === state.selectedOptionId) || definition.options[0]
+  const activePlanSource = state.activePlanSource || state.planSelection?.activePlanSource || "gui"
+  const routeLabels = state.route?.length
+    ? state.route
+        .map((id) => definition.options.find((option) => option.id === id)?.label || id)
+        .join(" -> ")
+    : "未構成"
+
+  return `
+    <div class="control-card">
+      <div class="control-title">${escapeHtml(definition.controlTitle)}</div>
+      <div class="control-caption">${escapeHtml(definition.controlCaption)}</div>
+      <div class="option-group">
+        <div class="option-group-title">${escapeHtml(definition.optionLabel || "候補")}</div>
+        ${advancedOptionCards(definition, state)}
+      </div>
+      ${
+        definition.successMode === "builderRun"
+          ? `
+            <div class="control-fixed">
+              <div>現在のルート: ${escapeHtml(routeLabels)}</div>
+              <div>部品数: ${state.route.length}</div>
+            </div>
+          `
+          : `
+            <div class="control-fixed">
+              <div>選択中: ${escapeHtml(selected?.label || "-")}</div>
+              <div>実行数: ${state.trialHistory.length}</div>
+            </div>
+          `
+      }
+      ${
+        definition.duelScript
+          ? `
+            <div class="duel-editor-block">
+              <div class="option-group-title">Duel DSL</div>
+              <textarea id="duel-script-source" class="script-editor" data-role="duel-script-source">${escapeHtml(state.duelSourceCode || "")}</textarea>
+              <div class="control-fixed">
+                <div>対応命令: plan / param / use / run / repeat / for / if / observe / choose / save</div>
+                <div>compile state: ${escapeHtml(state.duelCompileState || "editing")}</div>
+                <div>active source: ${escapeHtml(planSourceLabel(activePlanSource))}</div>
+              </div>
+            </div>
+          `
+          : ""
+      }
+    </div>
+  `
+}
+
+function advancedVisualHtml(stage, state, definition) {
+  const selected = definition.options.find((option) => option.id === state.selectedOptionId) || definition.options[0]
+  const latest = state.trialHistory[state.trialHistory.length - 1]
+  const compiledPlan = state.duelCompiledPlan || state.planSelection?.executablePlan
+  const duelErrors = state.duelCompileErrors?.length
+    ? state.duelCompileErrors.map((error) => `<div class="console-line">${escapeHtml(error)}</div>`).join("")
+    : ""
+  const compiledPlanSummary = compiledPlan
+    ? `IR ${planSourceLabel(compiledPlan.source?.sourceType)} / actions ${compiledPlan.actions.length} / load ${compiledPlan.metadata.estimatedLoad} / ${compiledPlan.validation?.status || "unchecked"}`
+    : "まだコンパイルしていません。"
+
+  return `
+    <div class="advanced-layout">
+      <div class="advanced-card ${latest?.blocked ? "warn" : latest ? "good" : ""}">
+        <div class="advanced-card-title">${escapeHtml(selected?.label || "候補")}</div>
+        <div class="advanced-step-list">
+          ${(selected?.steps || ["まだ手順はありません。"])
+            .map((step, index) => `<div class="advanced-step"><span>${index + 1}</span>${escapeHtml(step)}</div>`)
+            .join("")}
+        </div>
+        <div class="advanced-card-note">${escapeHtml(selected?.summary || "")}</div>
+      </div>
+      <div class="advanced-card">
+        <div class="advanced-card-title">実行履歴</div>
+        ${advancedTrialTable(state.trialHistory)}
+      </div>
+      ${
+        definition.duelScript
+          ? `
+            <div class="advanced-card ${state.duelCompileState === "compileError" ? "warn" : state.duelCompileState === "compiled" ? "good" : ""}">
+              <div class="advanced-card-title">Duel Compiler</div>
+              ${
+                duelErrors ||
+                `<div class="console-line">${escapeHtml(compiledPlanSummary)}</div>`
+              }
+              ${
+                state.duelLastRound
+                  ? `<div class="console-line">last round score ${state.duelLastRound.scoreDelta} / detect ${state.duelLastRound.detectionScore}</div>`
+                  : ""
+              }
+            </div>
+          `
+          : ""
+      }
+    </div>
+  `
+}
+
+function advancedResultHtml(stage, state, definition) {
+  const latest = state.trialHistory[state.trialHistory.length - 1]
+  const runtimeScore = state.runtimeScore || state.runtimeState?.score
+  const runtimeEvents = (state.runtimeEvents || state.runtimeState?.historyState?.events || []).filter((item) => item.eventType !== "score.updated")
+  const diagnosticsCount = state.diagnostics?.length || state.runtimeState?.diagnostics?.length || 0
+  const activePlanSource = state.activePlanSource || state.planSelection?.activePlanSource || "gui"
+  const activePlanId = state.planSelection?.executablePlan?.planId || state.duelCompiledPlan?.planId || "未確定"
+  const cards = [
+    statCard("実行数", state.trialHistory.length, state.success ? "完了" : "進行中", state.success ? "good" : "normal"),
+    statCard("現在スコア", state.score || latest?.score || 0, state.targetScore ? `目標 ${state.targetScore}` : "候補評価"),
+    statCard("防御警戒", state.defenderState?.alertLevel ?? "-", state.defenderState?.rateLimit ? "制限中" : "監視中", state.defenderState?.rateLimit ? "warn" : "normal"),
+    statCard("計画ソース", planSourceLabel(activePlanSource), activePlanId),
+    statCard(
+      "Runtime Score",
+      runtimeScore ? runtimeScore.normalizedTotal : "-",
+      runtimeScore ? `${runtimeScore.grade} / ${runtimeScore.profileId}` : "共通スコア待機",
+      runtimeScoreAccent(runtimeScore)
+    ),
+    statCard("Runtime Events", runtimeEvents.length, diagnosticsCount ? `diagnostics ${diagnosticsCount}` : "event log", diagnosticsCount ? "warn" : "normal"),
+  ]
+  if (state.round || definition.maxRounds) {
+    cards.push(statCard("Round", `${state.round}/${definition.maxRounds || "-"}`, "複数ラウンド評価"))
+  }
+  return `${cards.join("")}${advancedBestCard(state.bestTrial)}`
+}
+
+function advancedHintBlocks(stage, state, definition) {
+  const latest = state.trialHistory[state.trialHistory.length - 1]
+  const lines = [
+    state.feedback,
+    state.nextFocus,
+    latest ? `latest: ${latest.label} / score ${latest.score}` : "候補を選んで実行してください。",
+  ]
+  const blocks = [listCard("追加章ガイド", lines, state.success ? "good" : latest?.blocked ? "warn" : "normal")]
+  if (state.saved || state.loaded || state.compared || state.logReviewed) {
+    blocks.push(
+      listCard(
+        "状態",
+        [
+          `compared: ${booleanText(state.compared)}`,
+          `saved: ${booleanText(state.saved)}`,
+          `loaded: ${booleanText(state.loaded)}`,
+          `log reviewed: ${booleanText(state.logReviewed)}`,
+        ],
+        state.success ? "good" : "normal"
+      )
+    )
+  }
+  return blocks
+}
+
 function selectedStage24Order(state) {
   return state.orders.find((order) => order.id === state.selectedOrderId) || state.orders[0]
 }
@@ -893,6 +1151,11 @@ function inputHtml(stage, state) {
         </div>
       </div>
     `
+  }
+
+  const definition = advancedDefinition(stage.id)
+  if (definition) {
+    return advancedInputHtml(stage, state, definition)
   }
 
   return `
@@ -1430,6 +1693,10 @@ function visualHtml(stage, state) {
     case "3-4":
       return renderStage34Visual(state)
     default:
+      {
+        const definition = advancedDefinition(stage.id)
+        if (definition) return advancedVisualHtml(stage, state, definition)
+      }
       return ""
   }
 }
@@ -1588,6 +1855,10 @@ function resultHtml(stage, state) {
         ),
       ].join("")
     default:
+      {
+        const definition = advancedDefinition(stage.id)
+        if (definition) return advancedResultHtml(stage, state, definition)
+      }
       return ""
   }
 }
@@ -1795,11 +2066,105 @@ function hintHtml(stage, state) {
     )
   }
 
+  const definition = advancedDefinition(stage.id)
+  if (definition) {
+    blocks.push(...advancedHintBlocks(stage, state, definition))
+  }
+
   return blocks.join("")
 }
 
 function detailHtml(state) {
   return state.notes.map((note) => `<div class="detail-line">${escapeHtml(note)}</div>`).join("")
+}
+
+function advancedActionConfig(stage, state, definition) {
+  const buttons = []
+  const addNext = () => {
+    if (!state.success) return
+    if (appState.currentStageIndex >= STAGE_SEQUENCE.length - 1) {
+      buttons.push({ action: "restart_journey", label: "最初から見直す", kind: "success" })
+    } else {
+      buttons.push({ action: "next_stage", label: "次へ", kind: "success" })
+    }
+  }
+
+  if (definition.successMode === "builderRun") {
+    buttons.push({ action: "add_route_part", label: definition.primaryLabel || "追加", kind: "secondary" })
+    buttons.push({ action: "run_advanced_option", label: definition.secondaryLabel || "実行する", kind: "primary", disabled: state.success })
+    buttons.push({ action: "retry", label: "リトライ", kind: "ghost" })
+    addNext()
+    return buttons
+  }
+
+  if (definition.successMode === "saveAndLoad") {
+    buttons.push({ action: "save_advanced", label: definition.primaryLabel || "保存", kind: "primary", disabled: state.saved })
+    buttons.push({ action: "load_advanced", label: definition.secondaryLabel || "読込", kind: "secondary", disabled: !state.saved || state.success })
+    addNext()
+    return buttons
+  }
+
+  if (definition.successMode === "hypothesis") {
+    buttons.push({ action: "review_advanced_log", label: definition.primaryLabel || "ログ確認", kind: state.logReviewed ? "selected" : "secondary" })
+    buttons.push({ action: "submit_hypothesis", label: definition.secondaryLabel || "提出", kind: "primary", disabled: state.success })
+    addNext()
+    return buttons
+  }
+
+  if (definition.duelScript) {
+    buttons.push({ action: "run_advanced_option", label: definition.primaryLabel || "GUI計画で実行", kind: "primary", disabled: state.success })
+    buttons.push({ action: "compile_duel_script", label: definition.secondaryLabel || "DSLをコンパイル", kind: "secondary" })
+    buttons.push({ action: "run_duel_round", label: "DSLでラウンド実行", kind: "success", disabled: state.success })
+    buttons.push({ action: "retry", label: "リトライ", kind: "ghost" })
+    addNext()
+    return buttons
+  }
+
+  if (definition.successMode === "runRequiredAndCompare") {
+    buttons.push({ action: "run_advanced_option", label: definition.primaryLabel || "実行", kind: "primary", disabled: state.success })
+    buttons.push({ action: "compare_advanced", label: definition.secondaryLabel || "比較", kind: "secondary", disabled: state.success })
+    addNext()
+    return buttons
+  }
+
+  if (definition.successMode === "confirmBest") {
+    buttons.push({ action: "compare_advanced", label: definition.primaryLabel || "比較", kind: "primary", disabled: state.success })
+    buttons.push({ action: "compare_advanced", label: definition.secondaryLabel || "確定", kind: "success", disabled: state.success })
+    addNext()
+    return buttons
+  }
+
+  if (
+    definition.successMode === "saveBest" ||
+    definition.successMode === "batchBest" ||
+    definition.successMode === "searchAndSave"
+  ) {
+    buttons.push({ action: "run_advanced_option", label: definition.primaryLabel || "実行", kind: "primary", disabled: state.success && state.saved })
+    buttons.push({ action: "save_advanced", label: definition.secondaryLabel || "保存", kind: "secondary", disabled: state.success })
+    buttons.push({ action: "retry", label: "リトライ", kind: "ghost" })
+    addNext()
+    return buttons
+  }
+
+  if (definition.successMode === "roundLoop" || definition.successMode === "campaign") {
+    buttons.push({
+      action: "run_advanced_option",
+      label: definition.primaryLabel || "ラウンド実行",
+      kind: "primary",
+      disabled: state.success || (definition.maxRounds && state.round >= definition.maxRounds),
+    })
+    buttons.push({ action: "retry", label: "リトライ", kind: "ghost" })
+    addNext()
+    return buttons
+  }
+
+  buttons.push({ action: "run_advanced_option", label: definition.primaryLabel || "実行する", kind: "primary", disabled: state.success })
+  if (definition.secondaryLabel) {
+    buttons.push({ action: "save_advanced", label: definition.secondaryLabel, kind: "secondary", disabled: state.success })
+  }
+  buttons.push({ action: "retry", label: "リトライ", kind: "ghost" })
+  addNext()
+  return buttons
 }
 
 function actionConfig(stage, state) {
@@ -1926,9 +2291,13 @@ function actionConfig(stage, state) {
       buttons.push({ action: "run_batch_search", label: "まとめて試す", kind: "primary" })
       buttons.push({ action: "clear_search_results", label: "履歴クリア", kind: "ghost" })
       buttons.push({ action: "open_search_console", label: "Search Console へ", kind: "success" })
-      if (state.success) buttons.push({ action: "restart_journey", label: "最初から見直す", kind: "success" })
+      if (state.success) buttons.push({ action: "next_stage", label: "第4章へ進む", kind: "success" })
       break
     default:
+      {
+        const definition = advancedDefinition(stage.id)
+        if (definition) return advancedActionConfig(stage, state, definition)
+      }
       break
   }
   return buttons
@@ -2262,6 +2631,7 @@ function applyAction(action, value = "") {
   if (action === "select_order") payload = { orderId: value }
   if (action === "set_cause") payload = { causeId: value }
   if (action === "remove_candidate") payload = { candidateId: value }
+  if (action === "select_advanced_option") payload = { optionId: value }
 
   const nextState = runStageAction(stage.id, state, action, payload)
   appState.stageStates[stage.id] = mergeStageState(stage.id, nextState)
@@ -2290,6 +2660,29 @@ document.addEventListener("input", (event) => {
     consoleState.compileState = "editing"
     consoleState.compileErrors = []
     consoleState.compiledProgram = null
+    saveProgress()
+    return
+  }
+
+  if (target instanceof HTMLTextAreaElement && target.dataset.role === "duel-script-source") {
+    const stage = currentStage()
+    const current = currentStageState()
+    current.duelSourceCode = target.value
+    current.duelCompileState = "editing"
+    current.duelCompileErrors = []
+    current.duelCompiledPlan = null
+    if (current.runtimeState?.planSelection) {
+      const staleSources = new Set(current.runtimeState.planSelection.staleSources || [])
+      staleSources.add("dsl")
+      current.runtimeState.planSelection.staleSources = [...staleSources]
+      current.runtimeState.planSelection.dslPlan = null
+      if (current.runtimeState.planSelection.activePlanSource === "dsl") {
+        current.runtimeState.planSelection.executablePlan = null
+      }
+      current.planSelection = current.runtimeState.planSelection
+      current.activePlanSource = current.runtimeState.planSelection.activePlanSource || current.activePlanSource
+    }
+    appState.stageStates[stage.id] = mergeStageState(stage.id, current)
     saveProgress()
     return
   }

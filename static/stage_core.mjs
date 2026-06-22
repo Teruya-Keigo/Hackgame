@@ -175,6 +175,314 @@ export const STAGE_SEQUENCE = [
     mission: ["候補条件を追加する", "まとめて試す", "目標差分を超えるベスト条件を見つける"],
     focus: "比較と半自動探索",
   },
+  {
+    id: "4-1",
+    chapter: 4,
+    chapterTitle: "第4章 複合攻撃と戦略化",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "1つずつなら小さいのに、組み合わせると大きい",
+    goal: "単独利用と複合利用の影響差を比較する",
+    mission: ["ケースAを実行する", "ケースBを実行する", "総利得の差を比較する"],
+    focus: "先に作った有利状態が次の不整合を支えること",
+  },
+  {
+    id: "4-2",
+    chapter: 4,
+    chapterTitle: "第4章 複合攻撃と戦略化",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "この順番で使うと一番伸びる",
+    goal: "同じ要素でも順番で結果が変わることを理解する",
+    mission: ["手順候補を選ぶ", "実行して結果を見る", "最も利得の高い候補を見つける"],
+    focus: "順序設計と利得内訳",
+  },
+  {
+    id: "4-3",
+    chapter: 4,
+    chapterTitle: "第4章 複合攻撃と戦略化",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "制限の中で最大利益を狙え",
+    goal: "手数制限内で効果的な複合手順を選ぶ",
+    mission: ["手順候補を選ぶ", "制約内で実行する", "目標利得を超える"],
+    focus: "残り手数と利得効率",
+  },
+  {
+    id: "4-4",
+    chapter: 4,
+    chapterTitle: "第4章 複合攻撃と戦略化",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "どこを塞げば全部止まる？",
+    goal: "複合攻撃の依存関係を読み、効果的な対策箇所を選ぶ",
+    mission: ["対策候補を選ぶ", "防御後の利得を比較する", "有効な対策で確定する"],
+    focus: "連鎖のボトルネック",
+  },
+  {
+    id: "5-1",
+    chapter: 5,
+    chapterTitle: "第5章 自由実験と適応防御への橋渡し",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "攻撃を組み立ててみよう",
+    goal: "用意された部品を並べて1本のシナリオを作る",
+    mission: ["攻撃部品を選ぶ", "ルートに追加する", "実行ログを見る"],
+    focus: "攻撃部品の組み合わせ方",
+  },
+  {
+    id: "5-2",
+    chapter: 5,
+    chapterTitle: "第5章 自由実験と適応防御への橋渡し",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "どの条件なら通る？",
+    goal: "条件によって成功可否や利得が変わることを確認する",
+    mission: ["条件を変える", "通る条件を実行する", "止まる条件も確認する"],
+    focus: "条件差と防御反応",
+  },
+  {
+    id: "5-3",
+    chapter: 5,
+    chapterTitle: "第5章 自由実験と適応防御への橋渡し",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "一番通りやすく、一番得する形を探せ",
+    goal: "成功率と利得の両方を見て戦略を改善する",
+    mission: ["複数候補を試す", "履歴を比較する", "ベスト結果を保存する"],
+    focus: "通りやすさと利得の両立",
+  },
+  {
+    id: "5-4",
+    chapter: 5,
+    chapterTitle: "第5章 自由実験と適応防御への橋渡し",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "防御が動く中で通る戦略を作れ",
+    goal: "防御反応を見ながら戦略を調整する",
+    mission: ["防御ログを見る", "別戦略を試す", "突破できる戦略を保存する"],
+    focus: "動的反応と調整",
+  },
+  {
+    id: "6-1",
+    chapter: 6,
+    chapterTitle: "第6章 戦略の自動化",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "いつもの手順を保存しよう",
+    goal: "手動手順を再利用可能なテンプレートとして保存する",
+    mission: ["テンプレートを保存する", "保存一覧を見る", "再読込する"],
+    focus: "名前付き戦略と再利用",
+  },
+  {
+    id: "6-2",
+    chapter: 6,
+    chapterTitle: "第6章 戦略の自動化",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "戦略に変数を入れてみよう",
+    goal: "戦略の一部をパラメータ化する",
+    mission: ["変数化する項目を選ぶ", "初期値を確認する", "更新して保存する"],
+    focus: "固定値と変数の違い",
+  },
+  {
+    id: "6-3",
+    chapter: 6,
+    chapterTitle: "第6章 戦略の自動化",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "まとめて試して比べよう",
+    goal: "複数条件へ一括適用し、結果を比較する",
+    mission: ["条件セットを選ぶ", "まとめて実行する", "ベスト条件を選ぶ"],
+    focus: "一括適用とランキング",
+  },
+  {
+    id: "6-4",
+    chapter: 6,
+    chapterTitle: "第6章 戦略の自動化",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "条件に応じて使い分ける戦略を作れ",
+    goal: "条件ごとに異なる戦略を割り当てる",
+    mission: ["割り当てルールを選ぶ", "まとめて評価する", "単一戦略より高い評価を出す"],
+    focus: "条件付き戦略",
+  },
+  {
+    id: "7-1",
+    chapter: 7,
+    chapterTitle: "第7章 戦略探索と選択",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "候補は1つじゃない",
+    goal: "複数候補を比較し最良戦略を特定する",
+    mission: ["候補を確認する", "比較実行する", "最良候補を読む"],
+    focus: "候補集合としての戦略",
+  },
+  {
+    id: "7-2",
+    chapter: 7,
+    chapterTitle: "第7章 戦略探索と選択",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "利得最大の戦略を探せ",
+    goal: "利得を評価軸に候補を探索する",
+    mission: ["探索条件を設定する", "探索する", "ベスト候補を保存する"],
+    focus: "候補生成と利得最大化",
+  },
+  {
+    id: "7-3",
+    chapter: 7,
+    chapterTitle: "第7章 戦略探索と選択",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "利得だけで決めていい？",
+    goal: "成功率や安定性を含めて採用候補を比較する",
+    mission: ["評価軸を切り替える", "2軸比較する", "別の有力候補を見つける"],
+    focus: "多目的比較",
+  },
+  {
+    id: "7-4",
+    chapter: 7,
+    chapterTitle: "第7章 戦略探索と選択",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "この条件ならこの戦略を採用せよ",
+    goal: "条件群ごとに採用戦略を選択する",
+    mission: ["条件ごとの候補を見る", "採用評価する", "分割採用を保存する"],
+    focus: "探索結果から採用判断へ",
+  },
+  {
+    id: "8-1",
+    chapter: 8,
+    chapterTitle: "第8章 資源圧力と防御耐性",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "押し込みすぎると何が起きる？",
+    goal: "行動強度がキュー、遅延、検知に与える影響を見る",
+    mission: ["強度を選ぶ", "2種類以上実行する", "差を比較する"],
+    focus: "資源圧力の変化",
+  },
+  {
+    id: "8-2",
+    chapter: 8,
+    chapterTitle: "第8章 資源圧力と防御耐性",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "閾値を超えると防御が動く",
+    goal: "検知スコアが閾値を超えると制限が発動することを確認する",
+    mission: ["未発動ケースを実行する", "発動ケースを実行する", "境界を読む"],
+    focus: "防御閾値",
+  },
+  {
+    id: "8-3",
+    chapter: 8,
+    chapterTitle: "第8章 資源圧力と防御耐性",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "強く押すより、静かに通す",
+    goal: "高負荷戦略と低ノイズ戦略を比較する",
+    mission: ["高負荷を試す", "低ノイズを試す", "総合的に有利な戦略を選ぶ"],
+    focus: "利得と検知リスクのトレードオフ",
+  },
+  {
+    id: "8-4",
+    chapter: 8,
+    chapterTitle: "第8章 資源圧力と防御耐性",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "防御込みで最良戦略を選べ",
+    goal: "防御反応込みの総合評価で採用戦略を選ぶ",
+    mission: ["候補を評価する", "総合スコアを比較する", "最良戦略を保存する"],
+    focus: "耐性評価",
+  },
+  {
+    id: "9-1",
+    chapter: 9,
+    chapterTitle: "第9章 適応戦略と読み合い",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "同じ戦略が通らなくなる",
+    goal: "繰り返しで防御側の反応が変わることを確認する",
+    mission: ["同じ戦略を実行する", "もう一度実行する", "防御ログの変化を見る"],
+    focus: "履歴に応じた防御変化",
+  },
+  {
+    id: "9-2",
+    chapter: 9,
+    chapterTitle: "第9章 適応戦略と読み合い",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "防御の変化を読め",
+    goal: "ログから防御側が何に反応しているか推測する",
+    mission: ["防御ログを確認する", "仮説を選ぶ", "根拠と一緒に提出する"],
+    focus: "観測から仮説へ",
+  },
+  {
+    id: "9-3",
+    chapter: 9,
+    chapterTitle: "第9章 適応戦略と読み合い",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "戦略を更新して再挑戦せよ",
+    goal: "仮説に基づいて戦略を変更し前後を比較する",
+    mission: ["変更方針を選ぶ", "再実行する", "前回より改善する"],
+    focus: "仮説に対応した更新",
+  },
+  {
+    id: "9-4",
+    chapter: 9,
+    chapterTitle: "第9章 適応戦略と読み合い",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "変化する防御を相手に数ラウンドで突破せよ",
+    goal: "観測、仮説、更新を複数ラウンドで回す",
+    mission: ["ラウンドを進める", "仮説を更新する", "突破条件を満たす"],
+    focus: "適応ループ",
+  },
+  {
+    id: "10-1",
+    chapter: 10,
+    chapterTitle: "第10章 動的攻防モード",
+    stageNumber: 1,
+    stageCount: 4,
+    title: "ここからは対戦モード",
+    goal: "固定誘導が減る動的攻防モードのルールを確認する",
+    mission: ["ルールを確認する", "防御側の初期方針を見る", "対戦モードを開始する"],
+    focus: "観測と修正が中心になること",
+  },
+  {
+    id: "10-2",
+    chapter: 10,
+    chapterTitle: "第10章 動的攻防モード",
+    stageNumber: 2,
+    stageCount: 4,
+    title: "自分の初回攻撃計画を組め",
+    goal: "GUIまたはDuel DSLで初回の攻撃計画を作成し実行する",
+    mission: ["攻撃計画を作る", "必要ならDSLをコンパイルする", "初回ラウンドを完了する"],
+    focus: "有効な計画と初回防御反応",
+  },
+  {
+    id: "10-3",
+    chapter: 10,
+    chapterTitle: "第10章 動的攻防モード",
+    stageNumber: 3,
+    stageCount: 4,
+    title: "防御を読んで戦略を変えろ",
+    goal: "防御ログを読んで戦略を修正する",
+    mission: ["防御ログを読む", "仮説メモを作る", "修正後に改善する"],
+    focus: "防御反応に基づく修正",
+  },
+  {
+    id: "10-4",
+    chapter: 10,
+    chapterTitle: "第10章 動的攻防モード",
+    stageNumber: 4,
+    stageCount: 4,
+    title: "動的防御キャンペーンを突破せよ",
+    goal: "複数ラウンドで戦略更新とスコア管理を統合する",
+    mission: ["各ラウンドを実行する", "防御状態を見る", "目標スコアを達成する"],
+    focus: "動的防御キャンペーン",
+  },
 ]
 
 export const STAGE_COUNT = STAGE_SEQUENCE.length
@@ -361,6 +669,587 @@ function event(label, detail, kind = "system", extra = {}) {
   return { label, detail, kind, ...extra }
 }
 
+export const RUNTIME_VERSION = "common-runtime-2026-06-22"
+
+const COMMON_PLAN_LIMITS = {
+  maxExpandedActions: 32,
+  maxEstimatedLoad: 24,
+  maxEstimatedRisk: 140,
+}
+
+const SCORE_COMPONENT_KEYS = [
+  "gain",
+  "success",
+  "stability",
+  "stealth",
+  "resourceEfficiency",
+  "learningProgress",
+]
+
+const SCORE_PENALTY_KEYS = [
+  "detectionPenalty",
+  "failurePenalty",
+  "retryPenalty",
+  "resourcePenalty",
+  "invalidPlanPenalty",
+]
+
+const SCORE_PROFILES = {
+  basic: {
+    profileId: "ch0_1_basic_observation",
+    chapterId: "chapter0_1",
+    weights: {
+      gain: 0.1,
+      success: 1,
+      stability: 0.2,
+      stealth: 0,
+      resourceEfficiency: 0,
+      learningProgress: 1,
+      detectionPenalty: 0,
+      failurePenalty: 0.2,
+      retryPenalty: 0.1,
+      resourcePenalty: 0,
+      invalidPlanPenalty: 0,
+    },
+    normalization: { min: 0, max: 100 },
+    gradeThresholds: { S: 90, A: 75, B: 60, C: 40 },
+  },
+  state: {
+    profileId: "ch2_state_consistency",
+    chapterId: "chapter2",
+    weights: {
+      gain: 0.4,
+      success: 0.8,
+      stability: 0.5,
+      stealth: 0,
+      resourceEfficiency: 0,
+      learningProgress: 1,
+      detectionPenalty: 0,
+      failurePenalty: 0.4,
+      retryPenalty: 0.2,
+      resourcePenalty: 0,
+      invalidPlanPenalty: 0,
+    },
+    normalization: { min: 0, max: 100 },
+    gradeThresholds: { S: 90, A: 75, B: 60, C: 40 },
+  },
+  search: {
+    profileId: "ch3_rounding_search",
+    chapterId: "chapter3",
+    weights: {
+      gain: 1,
+      success: 0.5,
+      stability: 0.2,
+      stealth: 0,
+      resourceEfficiency: 0.2,
+      learningProgress: 0.6,
+      detectionPenalty: 0,
+      failurePenalty: 0.2,
+      retryPenalty: 0.1,
+      resourcePenalty: 0,
+      invalidPlanPenalty: 0.3,
+    },
+    normalization: { min: 0, max: 100 },
+    gradeThresholds: { S: 90, A: 75, B: 60, C: 40 },
+  },
+  strategy: {
+    profileId: "ch4_7_strategy_comparison",
+    chapterId: "chapter4_7",
+    weights: {
+      gain: 1,
+      success: 0.8,
+      stability: 0.7,
+      stealth: 0.2,
+      resourceEfficiency: 0.4,
+      learningProgress: 0.5,
+      detectionPenalty: 0.3,
+      failurePenalty: 0.4,
+      retryPenalty: 0.2,
+      resourcePenalty: 0.2,
+      invalidPlanPenalty: 0.4,
+    },
+    normalization: { min: 0, max: 100 },
+    gradeThresholds: { S: 90, A: 75, B: 60, C: 40 },
+  },
+  resource: {
+    profileId: "ch8_resource_resilience",
+    chapterId: "chapter8",
+    weights: {
+      gain: 0.8,
+      success: 0.8,
+      stability: 0.7,
+      stealth: 0.8,
+      resourceEfficiency: 1,
+      learningProgress: 0.5,
+      detectionPenalty: 0.9,
+      failurePenalty: 0.4,
+      retryPenalty: 0.2,
+      resourcePenalty: 1,
+      invalidPlanPenalty: 0.5,
+    },
+    normalization: { min: 0, max: 100 },
+    gradeThresholds: { S: 90, A: 75, B: 60, C: 40 },
+  },
+  dynamic: {
+    profileId: "ch9_10_dynamic_adaptation",
+    chapterId: "chapter9_10",
+    weights: {
+      gain: 1,
+      success: 0.9,
+      stability: 0.8,
+      stealth: 0.9,
+      resourceEfficiency: 0.8,
+      learningProgress: 0.7,
+      detectionPenalty: 1,
+      failurePenalty: 0.6,
+      retryPenalty: 0.3,
+      resourcePenalty: 0.8,
+      invalidPlanPenalty: 0.7,
+    },
+    normalization: { min: 0, max: 100 },
+    gradeThresholds: { S: 90, A: 75, B: 60, C: 40 },
+  },
+}
+
+function runtimeChapterId(chapter) {
+  return `chapter${chapter}`
+}
+
+function scoreProfileKeyForChapter(chapter) {
+  if (chapter <= 1) return "basic"
+  if (chapter === 2) return "state"
+  if (chapter === 3) return "search"
+  if (chapter >= 4 && chapter <= 7) return "strategy"
+  if (chapter === 8) return "resource"
+  return "dynamic"
+}
+
+export function getScoreProfileForStage(stageId) {
+  const meta = stageMeta(stageId)
+  if (!meta) throw new Error(`unknown score profile stage: ${stageId}`)
+  return clone(SCORE_PROFILES[scoreProfileKeyForChapter(meta.chapter)])
+}
+
+function emptyScoreComponents() {
+  return Object.fromEntries(SCORE_COMPONENT_KEYS.map((key) => [key, 0]))
+}
+
+function emptyScorePenalties() {
+  return Object.fromEntries(SCORE_PENALTY_KEYS.map((key) => [key, 0]))
+}
+
+function runtimeEventId(stageId, stepIndex, eventType) {
+  return `${stageId}:${String(stepIndex).padStart(4, "0")}:${String(eventType).replace(/[^a-z0-9_.-]/gi, "_")}`
+}
+
+function normalizeDiagnostic(input = {}) {
+  return {
+    id: input.id || `diag:${input.category || "RuntimeError"}:${input.source?.line || 0}:${input.message || "diagnostic"}`,
+    severity: input.severity || "error",
+    category: input.category || "RuntimeError",
+    message: input.message || "Runtime diagnostic",
+    detail: input.detail || "",
+    source: input.source || { sourceType: "runtime" },
+    fixHint: input.fixHint || "",
+  }
+}
+
+export function createGameEvent(input = {}, runtimeState = null) {
+  const stageId = input.stageId || runtimeState?.stageId || "unknown-stage"
+  const meta = stageMeta(stageId)
+  const stepIndex = Number.isInteger(input.stepIndex)
+    ? input.stepIndex
+    : (runtimeState?.historyState?.events?.length || 0) + 1
+  const eventType = input.eventType || "runtime.event"
+  const result = input.result || "normal"
+  const severity =
+    input.severity ||
+    (result === "abnormal" || result === "blocked" || result === "failure" ? "warning" : "info")
+  return {
+    id: input.id || runtimeEventId(stageId, stepIndex, eventType),
+    chapterId: input.chapterId || runtimeState?.chapterId || runtimeChapterId(meta?.chapter ?? 0),
+    stageId,
+    screenId: input.screenId || runtimeState?.screenId || undefined,
+    roundId: input.roundId || undefined,
+    campaignId: input.campaignId || undefined,
+    timestamp: Number.isFinite(input.timestamp) ? input.timestamp : stepIndex,
+    stepIndex,
+    actor: input.actor || "runtime",
+    eventType,
+    targetId: input.targetId || undefined,
+    correlationId: input.correlationId || undefined,
+    parentEventId: input.parentEventId || undefined,
+    before: input.before || undefined,
+    after: input.after || undefined,
+    result,
+    severity,
+    message: input.message || "",
+    tags: Array.isArray(input.tags) ? [...input.tags] : [],
+    metadata: input.metadata || {},
+  }
+}
+
+export function createInitialRuntimeState(stageId, extra = {}) {
+  const meta = stageMeta(stageId)
+  if (!meta) throw new Error(`unknown runtime stage: ${stageId}`)
+  return {
+    runtimeVersion: RUNTIME_VERSION,
+    chapterId: runtimeChapterId(meta.chapter),
+    stageId,
+    screenId: extra.screenId || stageId,
+    stageStatus: extra.stageStatus || "ready",
+    domainState: {
+      orders: {},
+      balances: {},
+      refunds: {},
+      numeric: {},
+      resources: {
+        capacity: 10,
+        usedCapacity: 0,
+        queueLength: 0,
+        averageLatency: 0,
+        virtualLoad: 0,
+        rateLimitActive: false,
+      },
+      defense: {
+        alertLevel: 1,
+        detectionScore: 0,
+        blocked: false,
+        activeRules: [],
+      },
+      strategies: {
+        templates: {},
+        strategyHistory: [],
+      },
+      custom: {},
+      ...(extra.domainState || {}),
+    },
+    uiState: {
+      selectedIds: [],
+      actionAvailability: {},
+      hintLevel: 0,
+      highlightedTargets: [],
+      formDrafts: {},
+      ...(extra.uiState || {}),
+    },
+    historyState: {
+      events: [],
+      trials: [],
+      plans: [],
+      scoreHistory: [],
+      diagnostics: [],
+      ...(extra.historyState || {}),
+    },
+    planSelection: {
+      activePlanSource: "gui",
+      staleSources: [],
+      ...(extra.planSelection || {}),
+    },
+    activePlan: extra.activePlan || null,
+    score: extra.score || null,
+    diagnostics: extra.diagnostics || [],
+  }
+}
+
+function planValue(rawValue) {
+  if (rawValue && typeof rawValue === "object" && "type" in rawValue) return rawValue
+  if (typeof rawValue === "number") return { type: "number", value: rawValue }
+  if (typeof rawValue === "boolean") return { type: "boolean", value: rawValue }
+  if (typeof rawValue === "string") return { type: "string", value: rawValue }
+  if (rawValue && typeof rawValue === "object" && "ref" in rawValue) {
+    return { type: "observationRef", path: rawValue.ref }
+  }
+  return { type: "string", value: String(rawValue ?? "") }
+}
+
+function unwrapPlanValue(value) {
+  if (!value || typeof value !== "object" || !("type" in value)) return value
+  if (value.type === "range") return `${value.from}..${value.to}`
+  if (value.type === "observationRef") return value.path
+  return value.value
+}
+
+function normalizePlanAction(action, index = 0) {
+  const actionId = action.actionId || action.type || action.actionType || `action-${index + 1}`
+  const actionType = action.actionType || action.type || actionId
+  const params = Object.fromEntries(
+    Object.entries(action.params || {}).map(([key, value]) => [key, planValue(value)])
+  )
+  return {
+    actionId,
+    actionType,
+    type: actionType,
+    label: action.label || actionId,
+    params,
+    estimatedCost: Number(action.estimatedCost || action.estimatedTotalCost || 0),
+    estimatedLoad: Number(action.estimatedLoad || action.estimatedTotalLoad || 0),
+    estimatedRisk: Number(action.estimatedRisk ?? action.risk ?? 0),
+    risk: Number(action.risk ?? action.estimatedRisk ?? 0),
+    gain: Number(action.gain || 0),
+    tags: Array.isArray(action.tags) ? [...action.tags] : [],
+    preconditions: action.preconditions || [],
+    effects: action.effects || [],
+    line: action.line || 0,
+  }
+}
+
+function createPlanIR(input = {}) {
+  const now = Number.isFinite(input.now) ? input.now : 0
+  const actions = (input.actions || []).map((action, index) => normalizePlanAction(action, index))
+  const estimatedTotalCost = actions.reduce((sum, action) => sum + action.estimatedCost, 0)
+  const estimatedTotalLoad = actions.reduce((sum, action) => sum + action.estimatedLoad, 0)
+  const estimatedDetectionRisk = actions.reduce((sum, action) => sum + Math.max(0, action.estimatedRisk), 0)
+  const riskTags = [...new Set(actions.flatMap((action) => action.tags))]
+  const metadata = {
+    estimatedTotalCost,
+    estimatedTotalLoad,
+    estimatedDetectionRisk,
+    usesObservation: Boolean(input.metadata?.usesObservation),
+    usesLoop: Boolean(input.metadata?.usesLoop),
+    usesBranch: Boolean(input.metadata?.usesBranch),
+    usesTemplate: Boolean(input.metadata?.usesTemplate),
+    maxExpandedActions: actions.length,
+    riskTags,
+    strategyTags: riskTags.filter((tag) => tag !== "resource"),
+    ...(input.metadata || {}),
+    // Compatibility aliases for the existing stage runtime.
+    estimatedLoad: estimatedTotalLoad,
+    estimatedRisk: estimatedDetectionRisk,
+    estimatedGain: actions.reduce((sum, action) => sum + action.gain, 0),
+  }
+  return {
+    irVersion: "plan-ir-1",
+    planId: input.planId || "plan",
+    displayName: input.displayName || input.planId || "Plan",
+    source: input.source || { sourceType: "system" },
+    chapterId: input.chapterId || undefined,
+    stageId: input.stageId || undefined,
+    parameters: Object.fromEntries(
+      Object.entries(input.parameters || {}).map(([key, value]) => [key, planValue(value)])
+    ),
+    actions,
+    metadata,
+    validation: input.validation || { status: "unchecked", diagnostics: [] },
+    createdAt: Number.isFinite(input.createdAt) ? input.createdAt : now,
+    updatedAt: Number.isFinite(input.updatedAt) ? input.updatedAt : now,
+  }
+}
+
+export function validatePlanIR(plan, runtimeState = null, limits = COMMON_PLAN_LIMITS) {
+  const diagnostics = []
+  const actions = Array.isArray(plan?.actions) ? plan.actions : []
+  if (!plan || typeof plan !== "object") {
+    diagnostics.push(normalizeDiagnostic({ category: "VerificationError", message: "PlanIR is missing" }))
+  }
+  if (!actions.length) {
+    diagnostics.push(normalizeDiagnostic({ category: "VerificationError", message: "PlanIR must contain at least one action" }))
+  }
+  if (actions.length > limits.maxExpandedActions) {
+    diagnostics.push(
+      normalizeDiagnostic({
+        category: "VerificationError",
+        message: "PlanIR expanded action count exceeds the limit",
+        detail: `${actions.length} > ${limits.maxExpandedActions}`,
+      })
+    )
+  }
+  const estimatedLoad = plan?.metadata?.estimatedTotalLoad ?? plan?.metadata?.estimatedLoad ?? 0
+  const estimatedRisk = plan?.metadata?.estimatedDetectionRisk ?? plan?.metadata?.estimatedRisk ?? 0
+  if (estimatedLoad > limits.maxEstimatedLoad) {
+    diagnostics.push(
+      normalizeDiagnostic({
+        category: "VerificationError",
+        message: "PlanIR estimated load exceeds the stage budget",
+        detail: `${estimatedLoad} > ${limits.maxEstimatedLoad}`,
+      })
+    )
+  }
+  if (estimatedRisk > limits.maxEstimatedRisk) {
+    diagnostics.push(
+      normalizeDiagnostic({
+        severity: "warning",
+        category: "VerificationError",
+        message: "PlanIR estimated detection risk is high",
+        detail: `${estimatedRisk} > ${limits.maxEstimatedRisk}`,
+      })
+    )
+  }
+  for (const action of actions) {
+    const actionId = action.actionId || action.type
+    if (!DUEL_ACTIONS[actionId] && !["run", "strategy_apply", "batch_run", "search_trial"].includes(actionId)) {
+      diagnostics.push(
+        normalizeDiagnostic({
+          category: "SemanticError",
+          message: `Unknown action '${actionId}' is not allowed`,
+          source: { sourceType: plan?.source?.sourceType || "runtime", actionId },
+        })
+      )
+    }
+    for (const [paramName, param] of Object.entries(action.params || {})) {
+      if (!param || typeof param !== "object" || !("type" in param)) {
+        diagnostics.push(
+          normalizeDiagnostic({
+            category: "TypeError",
+            message: `Parameter '${paramName}' is not a typed PlanValue`,
+            source: { sourceType: plan?.source?.sourceType || "runtime", actionId, field: paramName },
+          })
+        )
+      }
+    }
+  }
+  const hasBlockingDiagnostic = diagnostics.some((diagnostic) => diagnostic.severity === "error" || diagnostic.severity === "fatal")
+  return {
+    status: hasBlockingDiagnostic ? "invalid" : "valid",
+    checkedAt: (runtimeState?.historyState?.events?.length || 0) + 1,
+    diagnostics,
+  }
+}
+
+export function resolveActivePlan(planSelection = {}) {
+  const activePlanSource = planSelection.activePlanSource || "gui"
+  const plan = planSelection[`${activePlanSource}Plan`]
+  const staleSources = new Set(planSelection.staleSources || [])
+  const diagnostics = []
+  if (!plan) {
+    diagnostics.push(
+      normalizeDiagnostic({
+        category: "VerificationError",
+        message: `No ${activePlanSource} PlanIR is available`,
+        source: { sourceType: activePlanSource },
+      })
+    )
+  }
+  if (staleSources.has(activePlanSource)) {
+    diagnostics.push(
+      normalizeDiagnostic({
+        category: "VerificationError",
+        message: `${activePlanSource} PlanIR is stale`,
+        source: { sourceType: activePlanSource },
+      })
+    )
+  }
+  return {
+    activePlanSource,
+    plan: diagnostics.length ? null : plan,
+    diagnostics,
+  }
+}
+
+export function reduceEvents(state, events = []) {
+  const next = clone(state || createInitialRuntimeState("0-1"))
+  const incomingEvents = events.map((item, index) =>
+    item.id && item.eventType ? item : createGameEvent({ ...item, stepIndex: (next.historyState.events.length || 0) + index + 1 }, next)
+  )
+  next.historyState.events.push(...incomingEvents)
+
+  for (const item of incomingEvents) {
+    if (item.eventType === "stage.completed") next.stageStatus = "completed"
+    if (item.eventType === "stage.failed") next.stageStatus = "failed"
+    if (item.eventType === "plan.validation.failed") next.stageStatus = "retryReady"
+    if (item.eventType === "plan.compiled" || item.eventType === "plan.created") {
+      if (item.metadata?.plan) next.historyState.plans.push(item.metadata.plan)
+      next.stageStatus = "planning"
+    }
+    if (item.eventType === "strategy.executed" || item.eventType === "search.trial.completed") {
+      next.stageStatus = "resolved"
+      if (item.metadata?.trial) next.historyState.trials.push(item.metadata.trial)
+    }
+    if (item.eventType === "score.updated" && item.metadata?.score) {
+      next.score = item.metadata.score
+      next.historyState.scoreHistory.push(item.metadata.score)
+    }
+    if (item.eventType === "resource.load.updated" || item.eventType === "resource.queue.updated" || item.eventType === "resource.latency.updated") {
+      next.domainState.resources = {
+        ...(next.domainState.resources || {}),
+        ...(item.after || {}),
+      }
+    }
+    if (item.eventType.startsWith("defense.")) {
+      next.domainState.defense = {
+        ...(next.domainState.defense || {}),
+        ...(item.after || {}),
+      }
+    }
+    if (item.eventType.startsWith("refund.") && item.targetId) {
+      next.domainState.refunds[item.targetId] = {
+        ...(next.domainState.refunds[item.targetId] || { orderId: item.targetId, refundCount: 0, totalRefundAmount: 0, refundedSteps: [], isDuplicate: false }),
+        ...(item.after || {}),
+      }
+    }
+    if (item.eventType.startsWith("rounding.") || item.eventType.startsWith("split.")) {
+      next.domainState.numeric = {
+        ...(next.domainState.numeric || {}),
+        ...(item.after || {}),
+      }
+    }
+    if (item.eventType === "plan.validation.failed" && item.metadata?.diagnostics) {
+      const diagnostics = item.metadata.diagnostics.map((diagnostic) => normalizeDiagnostic(diagnostic))
+      next.diagnostics.push(...diagnostics)
+      next.historyState.diagnostics.push(...diagnostics)
+    }
+  }
+  return next
+}
+
+function gradeForNormalizedScore(value, thresholds = { S: 90, A: 75, B: 60, C: 40 }) {
+  if (value >= thresholds.S) return "S"
+  if (value >= thresholds.A) return "A"
+  if (value >= thresholds.B) return "B"
+  if (value >= thresholds.C) return "C"
+  return "D"
+}
+
+export function calculateScore(events = [], runtimeState = null, scoreProfile = null) {
+  const profile = scoreProfile || getScoreProfileForStage(runtimeState?.stageId || "0-1")
+  const components = emptyScoreComponents()
+  const penalties = emptyScorePenalties()
+
+  for (const item of events) {
+    const metadata = item.metadata || {}
+    const gain = Number(metadata.gain ?? metadata.scoreDelta ?? 0)
+    const detection = Number(metadata.detection ?? metadata.detectionScore ?? 0)
+    const queue = Number(metadata.queue ?? 0)
+    const latency = Number(metadata.latency ?? 0)
+    components.gain += Math.max(0, gain)
+    if (item.result === "success" || metadata.success === true) components.success += 25
+    if (item.result === "normal") components.stability += 8
+    if (item.tags?.includes("stealth") || metadata.stealth === true) components.stealth += 12
+    if (queue || latency) components.resourceEfficiency += Math.max(0, 20 - queue * 2 - latency / 60)
+    if (item.eventType === "hint.unlocked" || item.eventType === "feedback.shown" || item.eventType === "stage.completed") {
+      components.learningProgress += 15
+    }
+    if (item.result === "blocked" || item.eventType === "defense.blocked" || item.eventType === "defense.rate_limited") {
+      penalties.failurePenalty += 12
+    }
+    if (item.eventType === "plan.validation.failed") {
+      penalties.invalidPlanPenalty += 25
+    }
+    penalties.detectionPenalty += Math.max(0, detection / 3)
+    penalties.resourcePenalty += Math.max(0, queue + latency / 120)
+  }
+
+  const total =
+    SCORE_COMPONENT_KEYS.reduce((sum, key) => sum + components[key] * profile.weights[key], 0) -
+    SCORE_PENALTY_KEYS.reduce((sum, key) => sum + penalties[key] * profile.weights[key], 0)
+  const min = profile.normalization.min
+  const max = profile.normalization.max
+  const normalizedTotal = clamp(((total - min) / (max - min)) * 100, 0, 100)
+  const score = {
+    scoreId: `${runtimeState?.stageId || "stage"}:score:${(runtimeState?.historyState?.scoreHistory?.length || 0) + 1}`,
+    chapterId: runtimeState?.chapterId || profile.chapterId,
+    stageId: runtimeState?.stageId || "",
+    profileId: profile.profileId,
+    components: Object.fromEntries(Object.entries(components).map(([key, value]) => [key, roundTo(value, 3)])),
+    penalties: Object.fromEntries(Object.entries(penalties).map(([key, value]) => [key, roundTo(value, 3)])),
+    total: roundTo(total, 3),
+    normalizedTotal: roundTo(normalizedTotal, 3),
+    grade: gradeForNormalizedScore(normalizedTotal, profile.gradeThresholds),
+    sourceEventIds: events.map((item) => item.id),
+    explanation: `profile ${profile.profileId}: ${roundTo(normalizedTotal, 1)} / 100`,
+  }
+  return score
+}
+
 function stageMeta(stageId) {
   return STAGE_SEQUENCE.find((stage) => stage.id === stageId)
 }
@@ -401,6 +1290,1844 @@ function stage34DefaultCandidates() {
     { id: "cand-1", splitCount: 2, repeatCount: 2, amount: CHAPTER3_BASE_AMOUNT },
     { id: "cand-2", splitCount: 4, repeatCount: 3, amount: CHAPTER3_BASE_AMOUNT },
   ]
+}
+
+const DUEL_ACTIONS = {
+  sequence_shift: {
+    label: "順序シフト",
+    tags: ["sequence"],
+    estimatedCost: 3,
+    estimatedLoad: 2,
+    risk: 18,
+    gain: 7,
+    params: {
+      delay: { type: "number", min: 1, max: 5, defaultValue: 2 },
+    },
+  },
+  refund_probe: {
+    label: "返金プローブ",
+    tags: ["state"],
+    estimatedCost: 2,
+    estimatedLoad: 2,
+    risk: 16,
+    gain: 6,
+    params: {
+      mode: { type: "string", values: ["safe", "aggressive"], defaultValue: "safe" },
+    },
+  },
+  rounding_split: {
+    label: "分割丸め",
+    tags: ["numeric"],
+    estimatedCost: 2,
+    estimatedLoad: 1,
+    risk: 10,
+    gain: 5,
+    params: {
+      split: { type: "number", min: 2, max: 8, defaultValue: 4 },
+    },
+  },
+  low_noise_probe: {
+    label: "低ノイズ確認",
+    tags: ["stealth", "resource"],
+    estimatedCost: 2,
+    estimatedLoad: 1,
+    risk: 6,
+    gain: 4,
+    params: {
+      intensity: { type: "number", min: 1, max: 3, defaultValue: 1 },
+    },
+  },
+  profit_route: {
+    label: "利得ルート",
+    tags: ["numeric", "sequence"],
+    estimatedCost: 4,
+    estimatedLoad: 3,
+    risk: 22,
+    gain: 9,
+    params: {
+      split: { type: "number", min: 2, max: 8, defaultValue: 4 },
+    },
+  },
+  resource_probe: {
+    label: "資源プローブ",
+    tags: ["resource"],
+    estimatedCost: 2,
+    estimatedLoad: 3,
+    risk: 20,
+    gain: 5,
+    params: {
+      intensity: { type: "number", min: 1, max: 3, defaultValue: 2 },
+    },
+  },
+  wait_interval: {
+    label: "間隔調整",
+    tags: ["stealth"],
+    estimatedCost: 1,
+    estimatedLoad: 0,
+    risk: -8,
+    gain: 1,
+    params: {
+      ticks: { type: "number", min: 1, max: 5, defaultValue: 2 },
+    },
+  },
+  defense_read: {
+    label: "防御観測",
+    tags: ["observe"],
+    estimatedCost: 1,
+    estimatedLoad: 0,
+    risk: -4,
+    gain: 2,
+    params: {
+      detail: { type: "string", values: ["summary", "score", "reason"], defaultValue: "summary" },
+    },
+  },
+  template_switch: {
+    label: "テンプレート切替",
+    tags: ["strategy"],
+    estimatedCost: 2,
+    estimatedLoad: 1,
+    risk: 4,
+    gain: 5,
+    params: {
+      variant: { type: "string", values: ["quiet", "balanced", "profit"], defaultValue: "balanced" },
+    },
+  },
+}
+
+const DUEL_OBSERVATIONS = new Set([
+  "defense.alert_level",
+  "defense.rate_limit",
+  "round.last_block_reason",
+  "round.score_delta",
+  "resource.queue",
+  "score.current",
+])
+
+const DUEL_COMPILER_LIMITS = {
+  maxStatements: 120,
+  maxLoopIterations: 12,
+  maxExpandedActions: 32,
+  maxVirtualLoad: 24,
+  maxRoundActions: 16,
+}
+
+const DUEL_SCRIPT_SAMPLE =
+  'plan first_probe:\n  use sequence_shift delay=2\n  use refund_probe mode="safe"\n  use low_noise_probe intensity=1\n  run'
+
+const ADVANCED_STAGE_DEFINITIONS = {
+  "4-1": {
+    controlTitle: "ケース比較",
+    controlCaption: "ケースAとBを両方実行して、最後に比較します。",
+    optionLabel: "固定ケース",
+    primaryLabel: "ケースを実行",
+    secondaryLabel: "比較する",
+    successMode: "runRequiredAndCompare",
+    requiredOptionIds: ["solo_shift", "chain_refund"],
+    options: [
+      {
+        id: "solo_shift",
+        label: "ケースA: 順序のズレのみ",
+        steps: ["受付順を固定", "処理直前に順序がズレる"],
+        gain: 8,
+        detection: 18,
+        successRate: 0.8,
+        summary: "順序差だけで小さな利得が出ます。",
+      },
+      {
+        id: "chain_refund",
+        label: "ケースB: 順序のズレ + 二重返金",
+        steps: ["順序差で有利状態を作る", "返金直後に再参照が起きる", "同じ注文に二度目の返金"],
+        gain: 23,
+        detection: 36,
+        successRate: 0.72,
+        summary: "最初の有利状態が次の不整合を支え、総利得が伸びます。",
+      },
+    ],
+  },
+  "4-2": {
+    controlTitle: "手順候補",
+    controlCaption: "同じ要素でも、順番が違うと結果が変わります。",
+    optionLabel: "ルート",
+    primaryLabel: "実行する",
+    successMode: "bestOption",
+    bestOptionId: "route_b",
+    targetScore: 18,
+    options: [
+      { id: "route_a", label: "A: 返金を先に狙う", steps: ["返金誘発", "順序操作"], gain: 12, detection: 32, successRate: 0.55, summary: "有利状態がまだ弱く、後続が伸びません。" },
+      { id: "route_b", label: "B: 順序差から返金へつなぐ", steps: ["順序操作", "返金再参照", "差分確定"], gain: 22, detection: 34, successRate: 0.74, summary: "先に作った順序差が返金不整合の足場になります。" },
+      { id: "route_c", label: "C: 数値差分を挟む", steps: ["数値分割", "順序操作", "返金誘発"], gain: 16, detection: 29, successRate: 0.62, summary: "安定しますが最大利得には届きません。" },
+    ],
+  },
+  "4-3": {
+    controlTitle: "制約内の戦略",
+    controlCaption: "3手以内で目標利得 20 を超える候補を探します。",
+    optionLabel: "候補",
+    primaryLabel: "実行する",
+    successMode: "targetScore",
+    targetScore: 20,
+    options: [
+      { id: "all_parts", label: "全部使う", steps: ["順序操作", "返金誘発", "数値差分", "追加確認"], stepCount: 4, gain: 21, detection: 45, successRate: 0.5, blocked: true, summary: "利得は高いものの手数上限を超えます。" },
+      { id: "efficient_chain", label: "効く2手に絞る", steps: ["順序操作", "返金再参照"], stepCount: 2, gain: 24, detection: 31, successRate: 0.75, summary: "制約内で最も利得効率が高い構成です。" },
+      { id: "numeric_only", label: "数値差分中心", steps: ["分割丸め", "反復"], stepCount: 2, gain: 11, detection: 14, successRate: 0.86, summary: "安定しますが今回の目標には足りません。" },
+    ],
+  },
+  "4-4": {
+    controlTitle: "対策候補",
+    controlCaption: "攻撃連鎖のどこを塞ぐと全体が止まるかを比べます。",
+    optionLabel: "防御",
+    primaryLabel: "比較する",
+    secondaryLabel: "この対策で確定",
+    successMode: "confirmBest",
+    bestOptionId: "refund_guard",
+    targetScore: 8,
+    options: [
+      { id: "rate_limit_only", label: "表面レート制限", steps: ["行動量だけを制限"], gain: 17, afterGain: 17, detection: 20, successRate: 0.58, summary: "一部の圧力は下がりますが連鎖は残ります。" },
+      { id: "refund_guard", label: "返金済み判定を必須化", steps: ["返金済みフラグを検査", "再参照時に二度目の返金を拒否"], gain: 5, afterGain: 5, detection: 8, successRate: 0.92, summary: "連鎖の中心を止め、総利得を目標以下に抑えます。" },
+      { id: "log_only", label: "ログ監視のみ", steps: ["異常ログを増やす"], gain: 21, afterGain: 21, detection: 28, successRate: 0.45, summary: "見つけやすくはなりますが成立自体は止まりません。" },
+    ],
+  },
+  "5-1": {
+    controlTitle: "Attack Builder",
+    controlCaption: "部品を1つ以上追加して実行します。",
+    optionLabel: "攻撃部品",
+    primaryLabel: "部品を追加",
+    secondaryLabel: "実行する",
+    successMode: "builderRun",
+    options: [
+      { id: "part_shift", label: "順序操作", steps: ["処理直前の順序差を作る"], gain: 7, detection: 15, successRate: 0.8, summary: "後続手順の足場になります。" },
+      { id: "part_refund", label: "返金再参照", steps: ["返金直後の再参照を見る"], gain: 9, detection: 22, successRate: 0.63, summary: "状態不整合を狙う部品です。" },
+      { id: "part_rounding", label: "分割丸め", steps: ["分割処理で小さな差を積む"], gain: 5, detection: 8, successRate: 0.9, summary: "低リスクな利得部品です。" },
+    ],
+  },
+  "5-2": {
+    controlTitle: "条件調整",
+    controlCaption: "同じルートで、通る条件と止まる条件を両方確認します。",
+    optionLabel: "条件",
+    primaryLabel: "条件で実行",
+    successMode: "passAndBlock",
+    options: [
+      { id: "quiet_condition", label: "低強度・間隔あり", steps: ["強度1", "間隔2"], gain: 13, detection: 18, blocked: false, successRate: 0.84, summary: "防御反応は弱く、ルートが通ります。" },
+      { id: "burst_condition", label: "高強度・連続実行", steps: ["強度3", "間隔0"], gain: 7, detection: 72, blocked: true, successRate: 0.24, summary: "検知閾値を超え、制限で利得が落ちます。" },
+      { id: "middle_condition", label: "中強度・短い間隔", steps: ["強度2", "間隔1"], gain: 15, detection: 42, blocked: false, successRate: 0.66, summary: "通りますが検知スコアは上がります。" },
+    ],
+  },
+  "5-3": {
+    controlTitle: "最適化候補",
+    controlCaption: "履歴を見ながら、通りやすく得な候補を保存します。",
+    optionLabel: "候補",
+    primaryLabel: "実験する",
+    secondaryLabel: "ベストを保存",
+    successMode: "saveBest",
+    bestOptionId: "balanced_best",
+    options: [
+      { id: "profit_greedy", label: "利得重視", steps: ["高利得ルート", "短い間隔"], gain: 24, detection: 74, blocked: true, successRate: 0.32, summary: "止められやすく、総合評価は伸びません。" },
+      { id: "safe_low", label: "安全重視", steps: ["低ノイズ", "丸め差分"], gain: 12, detection: 12, successRate: 0.9, summary: "通りやすい一方、利得は控えめです。" },
+      { id: "balanced_best", label: "バランス型", steps: ["順序差", "低ノイズ間隔", "分割丸め"], gain: 21, detection: 33, successRate: 0.78, summary: "利得と成功率のバランスが最も良い候補です。" },
+    ],
+  },
+  "5-4": {
+    controlTitle: "動的防御下の実験",
+    controlCaption: "防御ログを見ながら突破できる戦略を見つけます。",
+    optionLabel: "戦略",
+    primaryLabel: "実行する",
+    secondaryLabel: "保存する",
+    successMode: "saveBest",
+    bestOptionId: "adaptive_quiet",
+    options: [
+      { id: "repeat_burst", label: "同じ高強度を繰り返す", steps: ["高強度", "連続実行"], gain: 6, detection: 80, blocked: true, successRate: 0.18, summary: "防御ログに繰り返し傾向が出ます。" },
+      { id: "adaptive_quiet", label: "間隔を空けて低ノイズ化", steps: ["観測", "間隔調整", "低ノイズ実行"], gain: 19, detection: 29, successRate: 0.8, summary: "防御反応を見て通し方を調整しています。" },
+      { id: "numeric_cover", label: "数値差分で薄く積む", steps: ["分割丸め", "低反復"], gain: 14, detection: 16, successRate: 0.87, summary: "安定していますが突破条件には少し足りません。" },
+    ],
+  },
+  "6-1": {
+    controlTitle: "Template Save",
+    controlCaption: "固定手順をテンプレートとして保存し、再読込します。",
+    optionLabel: "テンプレート",
+    primaryLabel: "テンプレート保存",
+    secondaryLabel: "読み込む",
+    successMode: "saveAndLoad",
+    options: [
+      { id: "starter_template", label: "quiet-chain", steps: ["順序差", "低ノイズ", "分割丸め"], gain: 18, detection: 28, successRate: 0.78, summary: "第5章で作ったような手順を保存します。" },
+    ],
+  },
+  "6-2": {
+    controlTitle: "Parameter Mapping",
+    controlCaption: "戦略の一部を変数化して保存します。",
+    optionLabel: "変数化する項目",
+    primaryLabel: "変数化して保存",
+    successMode: "singleActionSuccess",
+    options: [
+      { id: "param_delay", label: "delay を変数化", steps: ["delay in 1..5", "default 2"], gain: 18, detection: 26, successRate: 0.8, summary: "間隔を条件ごとに変えられるようになります。" },
+      { id: "param_split", label: "split を変数化", steps: ["split in 2..8", "default 4"], gain: 17, detection: 22, successRate: 0.84, summary: "分割数を条件ごとに変えられるようになります。" },
+    ],
+  },
+  "6-3": {
+    controlTitle: "Batch Run",
+    controlCaption: "条件セットをまとめて実行してランキング化します。",
+    optionLabel: "条件セット",
+    primaryLabel: "まとめて実行",
+    secondaryLabel: "ベストを選ぶ",
+    successMode: "batchBest",
+    bestOptionId: "condition_balanced",
+    options: [
+      { id: "condition_fast", label: "fast: delay 1 / split 3", steps: ["delay 1", "split 3"], gain: 18, detection: 50, successRate: 0.55, summary: "速いが検知されやすい条件です。" },
+      { id: "condition_balanced", label: "balanced: delay 2 / split 5", steps: ["delay 2", "split 5"], gain: 22, detection: 32, successRate: 0.78, summary: "利得と通過率のバランスが高い条件です。" },
+      { id: "condition_safe", label: "safe: delay 4 / split 4", steps: ["delay 4", "split 4"], gain: 15, detection: 12, successRate: 0.92, summary: "安定しますが最大評価ではありません。" },
+    ],
+  },
+  "6-4": {
+    controlTitle: "Rule Builder",
+    controlCaption: "条件に応じた使い分けルールを評価します。",
+    optionLabel: "割り当て",
+    primaryLabel: "まとめて評価",
+    secondaryLabel: "保存する",
+    successMode: "saveBest",
+    bestOptionId: "adaptive_assignment",
+    options: [
+      { id: "single_profit", label: "全条件で利得重視", steps: ["profit_route を固定"], gain: 20, detection: 64, successRate: 0.42, summary: "一部条件で止まりやすくなります。" },
+      { id: "single_safe", label: "全条件で安全重視", steps: ["low_noise を固定"], gain: 14, detection: 12, successRate: 0.9, summary: "安定しますが伸びが小さいです。" },
+      { id: "adaptive_assignment", label: "条件ごとに切替", steps: ["高圧条件は low_noise", "余裕条件は profit_route"], gain: 25, detection: 28, successRate: 0.82, summary: "条件差を使い分け、単一戦略より高い総評価です。" },
+    ],
+  },
+  "7-1": {
+    controlTitle: "Candidate Compare",
+    controlCaption: "候補を並べ、利得で比較します。",
+    optionLabel: "候補",
+    primaryLabel: "比較実行",
+    successMode: "compareAll",
+    bestOptionId: "candidate_b",
+    options: [
+      { id: "candidate_a", label: "候補A", steps: ["安全寄り"], gain: 14, detection: 12, successRate: 0.88, summary: "安定しています。" },
+      { id: "candidate_b", label: "候補B", steps: ["複合ルート"], gain: 24, detection: 35, successRate: 0.72, summary: "今回の条件では利得最大です。" },
+      { id: "candidate_c", label: "候補C", steps: ["数値差分中心"], gain: 17, detection: 16, successRate: 0.86, summary: "中間的な候補です。" },
+    ],
+  },
+  "7-2": {
+    controlTitle: "Search Panel",
+    controlCaption: "利得最大を目的に候補を生成します。",
+    optionLabel: "探索条件",
+    primaryLabel: "探索する",
+    secondaryLabel: "ベストを保存",
+    successMode: "searchAndSave",
+    bestOptionId: "search_profit",
+    options: [
+      { id: "search_small", label: "候補数3", steps: ["狭い範囲"], gain: 18, detection: 22, successRate: 0.78, summary: "探索範囲が狭めです。" },
+      { id: "search_profit", label: "候補数6 / 利得優先", steps: ["split 2..6", "delay 1..3"], gain: 28, detection: 44, successRate: 0.64, summary: "利得最大候補を見つけます。" },
+      { id: "search_safe", label: "候補数6 / 安全寄り", steps: ["delay 3..5"], gain: 19, detection: 14, successRate: 0.9, summary: "安定候補が多くなります。" },
+    ],
+  },
+  "7-3": {
+    controlTitle: "Score Function",
+    controlCaption: "利得だけでなく安定性も含めて比較します。",
+    optionLabel: "評価軸",
+    primaryLabel: "2軸比較",
+    successMode: "multiAxis",
+    bestOptionId: "stable_candidate",
+    options: [
+      { id: "profit_candidate", label: "利得最大候補", steps: ["gain を重視"], gain: 30, detection: 68, successRate: 0.38, summary: "儲かりますが止まりやすい候補です。" },
+      { id: "stable_candidate", label: "安定候補", steps: ["successRate を重視"], gain: 21, detection: 22, successRate: 0.86, summary: "総合採用ではこちらが有力です。" },
+      { id: "middle_candidate", label: "中間候補", steps: ["均等重み"], gain: 24, detection: 38, successRate: 0.7, summary: "バランス型の比較対象です。" },
+    ],
+  },
+  "7-4": {
+    controlTitle: "Adoption Board",
+    controlCaption: "条件ごとに採用戦略を分けます。",
+    optionLabel: "採用方針",
+    primaryLabel: "採用評価",
+    secondaryLabel: "採用して保存",
+    successMode: "saveBest",
+    bestOptionId: "split_adoption",
+    options: [
+      { id: "all_a", label: "全条件で候補A", steps: ["安全固定"], gain: 17, detection: 13, successRate: 0.9, summary: "安定しますが条件差を活かせません。" },
+      { id: "all_b", label: "全条件で候補B", steps: ["利得固定"], gain: 19, detection: 58, successRate: 0.47, summary: "一部条件で大きく止まります。" },
+      { id: "split_adoption", label: "条件ごとに採用を分ける", steps: ["薄い条件はB", "厳しい条件はA"], gain: 27, detection: 25, successRate: 0.82, summary: "条件ごとのランキング差を使った最良採用です。" },
+    ],
+  },
+  "8-1": {
+    controlTitle: "Pressure Level",
+    controlCaption: "低・中・高のうち2種類以上を実行します。",
+    optionLabel: "強度",
+    primaryLabel: "実行する",
+    successMode: "runAtLeast",
+    requiredRunCount: 2,
+    options: [
+      { id: "pressure_low", label: "低", steps: ["強度1"], gain: 7, detection: 10, queue: 1, latency: 35, successRate: 0.95, summary: "キューと遅延は小さいです。" },
+      { id: "pressure_mid", label: "中", steps: ["強度2"], gain: 13, detection: 36, queue: 4, latency: 90, successRate: 0.75, summary: "利得は伸びますが圧力も増えます。" },
+      { id: "pressure_high", label: "高", steps: ["強度3"], gain: 16, detection: 68, queue: 9, latency: 180, successRate: 0.42, summary: "キュー・遅延・検知が大きく上がります。" },
+    ],
+  },
+  "8-2": {
+    controlTitle: "Threshold Lab",
+    controlCaption: "防御発動と未発動の両方を見ます。",
+    optionLabel: "条件",
+    primaryLabel: "実行する",
+    successMode: "passAndBlock",
+    options: [
+      { id: "under_threshold", label: "強度1 x 2", steps: ["score 24"], gain: 12, detection: 24, blocked: false, queue: 2, latency: 70, successRate: 0.86, summary: "閾値未満で防御はまだ動きません。" },
+      { id: "over_threshold", label: "強度3 x 3", steps: ["score 78"], gain: 5, detection: 78, blocked: true, queue: 10, latency: 220, successRate: 0.18, summary: "閾値を超え、レート制限が発動します。" },
+      { id: "near_threshold", label: "強度2 x 2", steps: ["score 48"], gain: 16, detection: 48, blocked: false, queue: 5, latency: 110, successRate: 0.62, summary: "境界に近く、次の反復で危険になります。" },
+    ],
+  },
+  "8-3": {
+    controlTitle: "Tradeoff",
+    controlCaption: "高負荷と低ノイズを比較します。",
+    optionLabel: "戦略",
+    primaryLabel: "実行する",
+    successMode: "bestOption",
+    bestOptionId: "low_noise_win",
+    options: [
+      { id: "high_pressure", label: "高負荷で押す", steps: ["強度3", "短時間"], gain: 11, detection: 82, blocked: true, queue: 11, latency: 240, successRate: 0.22, summary: "短期利得は高いものの遮断されます。" },
+      { id: "low_noise_win", label: "静かに通す", steps: ["強度1", "間隔2", "反復"], gain: 20, detection: 27, blocked: false, queue: 3, latency: 95, successRate: 0.82, summary: "防御込みではこちらが総合的に強くなります。" },
+      { id: "middle_pressure", label: "中負荷で様子を見る", steps: ["強度2", "間隔1"], gain: 17, detection: 45, blocked: false, queue: 5, latency: 130, successRate: 0.66, summary: "比較用の中間案です。" },
+    ],
+  },
+  "8-4": {
+    controlTitle: "Resilience Evaluation",
+    controlCaption: "防御込みの総合スコアで保存します。",
+    optionLabel: "採用候補",
+    primaryLabel: "総合評価",
+    secondaryLabel: "保存する",
+    successMode: "saveBest",
+    bestOptionId: "resilient_balanced",
+    options: [
+      { id: "raw_gain", label: "高利得固定", steps: ["profit_route"], gain: 23, detection: 72, queue: 10, latency: 230, successRate: 0.35, summary: "防御込みでは安定しません。" },
+      { id: "resilient_balanced", label: "耐性バランス", steps: ["観測", "低ノイズ", "必要時だけ利得ルート"], gain: 26, detection: 31, queue: 4, latency: 105, successRate: 0.84, summary: "利得、遅延、検知リスクの総合評価が最良です。" },
+      { id: "safe_only", label: "低ノイズ固定", steps: ["low_noise"], gain: 15, detection: 10, queue: 1, latency: 55, successRate: 0.94, summary: "安全ですが目標スコアは伸びません。" },
+    ],
+  },
+  "9-1": {
+    controlTitle: "Replay",
+    controlCaption: "同じ戦略を2回実行して、反応変化を見ます。",
+    optionLabel: "固定戦略",
+    primaryLabel: "実行する",
+    successMode: "repeatSame",
+    options: [
+      { id: "same_strategy", label: "quiet-chain を繰り返す", steps: ["同じテンプレート", "同じ条件"], gain: 18, detection: 24, successRate: 0.8, summary: "1回目は通りやすく、2回目は繰り返し検知が上がります。" },
+    ],
+  },
+  "9-2": {
+    controlTitle: "Hypothesis",
+    controlCaption: "ログを確認してから仮説を提出します。",
+    optionLabel: "仮説",
+    primaryLabel: "ログを確認",
+    secondaryLabel: "仮説を提出",
+    successMode: "hypothesis",
+    bestOptionId: "repeat_pattern",
+    options: [
+      { id: "repeat_pattern", label: "同一戦略の繰り返しに反応", steps: ["2回目からスコア上昇"], gain: 18, detection: 30, successRate: 0.82, summary: "ログの上昇タイミングと合っています。" },
+      { id: "rounding_only", label: "丸め差分だけに反応", steps: ["数値差分を見る"], gain: 12, detection: 18, successRate: 0.58, summary: "今回のログとは根拠が弱いです。" },
+      { id: "random_block", label: "ランダムに遮断している", steps: ["偶発とみなす"], gain: 8, detection: 20, successRate: 0.3, summary: "ログに一貫した傾向があるため不適切です。" },
+    ],
+  },
+  "9-3": {
+    controlTitle: "Mutation",
+    controlCaption: "仮説に対応する変更を選び、前回より改善します。",
+    optionLabel: "変更",
+    primaryLabel: "再実行する",
+    successMode: "bestOption",
+    bestOptionId: "change_interval",
+    options: [
+      { id: "same_again", label: "同じ戦略を繰り返す", steps: ["変更なし"], gain: 7, detection: 76, blocked: true, successRate: 0.18, summary: "仮説と対応せず、さらに検知されます。" },
+      { id: "change_interval", label: "実行間隔を変える", steps: ["delay 2 -> 4", "低ノイズ"], gain: 20, detection: 28, successRate: 0.82, summary: "繰り返しパターンを崩し、前回より改善します。" },
+      { id: "change_split_only", label: "split だけ変える", steps: ["数値条件だけ変更"], gain: 13, detection: 54, successRate: 0.44, summary: "原因との対応が弱く改善幅は小さいです。" },
+    ],
+  },
+  "9-4": {
+    controlTitle: "Adaptation Loop",
+    controlCaption: "観測して戦略を更新し、3ラウンド以内に突破します。",
+    optionLabel: "ラウンド方針",
+    primaryLabel: "次ラウンド実行",
+    successMode: "roundLoop",
+    bestOptionId: "adapt_each_round",
+    maxRounds: 3,
+    targetScore: 42,
+    options: [
+      { id: "repeat_same", label: "同じ方針を維持", steps: ["変更なし"], gain: 8, detection: 74, blocked: true, successRate: 0.2, summary: "防御に読まれます。" },
+      { id: "adapt_each_round", label: "観測ごとに更新", steps: ["観測", "仮説", "間隔調整"], gain: 18, detection: 26, successRate: 0.84, summary: "改善傾向を作れます。" },
+      { id: "over_correct", label: "低ノイズだけに寄せる", steps: ["安全固定"], gain: 12, detection: 12, successRate: 0.92, summary: "安全ですが突破スコアに届きにくいです。" },
+    ],
+  },
+  "10-1": {
+    controlTitle: "Duel Mode",
+    controlCaption: "ルールを確認して対戦モードを開始します。",
+    optionLabel: "確認項目",
+    primaryLabel: "対戦モードを開始",
+    successMode: "singleActionSuccess",
+    options: [
+      { id: "start_duel", label: "動的防御ルールを確認", steps: ["仮想環境のみ", "履歴依存防御", "複数ラウンド"], gain: 0, detection: 0, successRate: 1, summary: "ここからは観測と修正が中心です。" },
+    ],
+  },
+  "10-2": {
+    controlTitle: "Duel Script Console",
+    controlCaption: "GUI候補またはDuel DSLを有効な計画にして初回ラウンドを実行します。",
+    optionLabel: "GUI計画",
+    primaryLabel: "GUI計画で実行",
+    secondaryLabel: "DSLをコンパイル",
+    successMode: "duelFirstRound",
+    bestOptionId: "gui_balanced",
+    duelScript: true,
+    options: [
+      { id: "gui_empty", label: "空の計画", steps: [], gain: 0, detection: 0, successRate: 0, blocked: true, summary: "計画が空なので実行できません。" },
+      { id: "gui_balanced", label: "GUI: balanced probe", steps: ["sequence_shift", "refund_probe safe", "low_noise_probe"], gain: 20, detection: 32, successRate: 0.8, summary: "初回ラウンドに向いたバランス計画です。" },
+    ],
+  },
+  "10-3": {
+    controlTitle: "Revision",
+    controlCaption: "防御ログを読んで修正案を実行します。",
+    optionLabel: "修正案",
+    primaryLabel: "再実行",
+    successMode: "bestOption",
+    bestOptionId: "revise_low_noise",
+    options: [
+      { id: "repeat_plan", label: "同じ計画を再実行", steps: ["変更なし"], gain: 8, detection: 76, blocked: true, successRate: 0.18, summary: "防御側に読まれます。" },
+      { id: "revise_low_noise", label: "低ノイズへ修正", steps: ["防御ログ確認", "間隔追加", "低ノイズ"], gain: 21, detection: 26, successRate: 0.84, summary: "前回より検知が下がり、評価が改善します。" },
+      { id: "revise_profit", label: "利得ルートを追加", steps: ["profit_route"], gain: 24, detection: 70, blocked: true, successRate: 0.3, summary: "改善意図はありますが反応が強すぎます。" },
+    ],
+  },
+  "10-4": {
+    controlTitle: "Campaign",
+    controlCaption: "3ラウンドのキャンペーンで目標スコア 45 を狙います。",
+    optionLabel: "ラウンド方針",
+    primaryLabel: "ラウンド実行",
+    successMode: "campaign",
+    bestOptionId: "campaign_adapt",
+    maxRounds: 3,
+    targetScore: 45,
+    options: [
+      { id: "campaign_repeat", label: "同じ計画を固定", steps: ["固定"], gain: 8, detection: 74, blocked: true, successRate: 0.2, summary: "履歴依存防御に捕まります。" },
+      { id: "campaign_adapt", label: "防御状態ごとに更新", steps: ["観測", "低ノイズ", "必要時に利得"], gain: 19, detection: 28, successRate: 0.84, summary: "複数ラウンドで改善します。" },
+      { id: "campaign_safe", label: "安全固定", steps: ["低ノイズのみ"], gain: 12, detection: 10, successRate: 0.94, summary: "安定しますが目標スコアは伸びにくいです。" },
+    ],
+  },
+}
+
+function advancedDefinition(stageId) {
+  return ADVANCED_STAGE_DEFINITIONS[stageId] || null
+}
+
+export function getAdvancedStageDefinition(stageId) {
+  const definition = advancedDefinition(stageId)
+  return definition ? clone(definition) : null
+}
+
+function advancedOption(definition, optionId) {
+  return definition.options.find((option) => option.id === optionId) || definition.options[0]
+}
+
+function advancedOptionScore(option) {
+  if (option.score !== undefined) return option.score
+  const gain = Number(option.gain || 0)
+  const detection = Number(option.detection || 0)
+  const successRate = Number(option.successRate ?? 0.5)
+  const latencyPenalty = Number(option.latency || 0) / 60
+  const blockPenalty = option.blocked ? 9 : 0
+  const stepPenalty = option.stepCount && option.stepCount > 3 ? (option.stepCount - 3) * 5 : 0
+  return roundTo(gain * successRate - detection * 0.08 - latencyPenalty - blockPenalty - stepPenalty, 2)
+}
+
+export function simulateAdvancedOption(stageId, optionId, context = {}) {
+  const definition = advancedDefinition(stageId)
+  if (!definition) throw new Error(`unknown advanced stage: ${stageId}`)
+  const option = advancedOption(definition, optionId)
+  const runIndex = Number(context.runIndex || 1)
+  let detection = Number(option.detection || 0)
+  let gain = Number(option.gain || 0)
+  let blocked = Boolean(option.blocked)
+
+  if ((stageId === "9-1" || stageId === "9-4" || stageId === "10-4") && runIndex > 1 && option.id.includes("repeat")) {
+    detection += 22
+    gain = Math.max(0, gain - 8)
+    blocked = true
+  }
+
+  const queue = Number(option.queue ?? Math.max(0, Math.round(detection / 12)))
+  const latency = Number(option.latency ?? 40 + queue * 18)
+  const score = advancedOptionScore({ ...option, detection, gain, blocked, queue, latency })
+  const afterGain = Number(option.afterGain ?? gain)
+  return {
+    optionId: option.id,
+    label: option.label,
+    steps: clone(option.steps || []),
+    gain,
+    afterGain,
+    detection,
+    queue,
+    latency,
+    successRate: Number(option.successRate ?? 0.5),
+    blocked,
+    score,
+    summary: option.summary || "",
+  }
+}
+
+function createAdvancedTrial(stageId, option, index, context = {}) {
+  const definition = advancedDefinition(stageId)
+  const knownOption = definition?.options.some((item) => item.id === option.id)
+  const result = knownOption
+    ? simulateAdvancedOption(stageId, option.id, { ...context, runIndex: index })
+    : {
+        optionId: option.id,
+        label: option.label,
+        steps: clone(option.steps || []),
+        gain: Number(option.gain || 0),
+        afterGain: Number(option.afterGain ?? option.gain ?? 0),
+        detection: Number(option.detection || 0),
+        queue: Number(option.queue ?? Math.max(0, Math.round(Number(option.detection || 0) / 12))),
+        latency: Number(option.latency ?? 40),
+        successRate: Number(option.successRate ?? 0.5),
+        blocked: Boolean(option.blocked),
+        score: advancedOptionScore(option),
+        summary: option.summary || "",
+      }
+  return {
+    id: `${stageId}-${option.id}-${index}`,
+    index,
+    ...result,
+  }
+}
+
+function bestAdvancedTrial(trials) {
+  return trials.reduce((best, trial) => (!best || trial.score > best.score ? trial : best), null)
+}
+
+function createInitialAdvancedState(stageId) {
+  const definition = advancedDefinition(stageId)
+  if (!definition) return null
+  const selectedOptionId = definition.defaultOptionId || definition.bestOptionId || definition.options[0]?.id || ""
+  const runtimeState = createInitialRuntimeState(stageId, {
+    planSelection: {
+      activePlanSource: "gui",
+      staleSources: definition.duelScript ? ["dsl"] : [],
+    },
+  })
+  return createBaseState({
+    mode: "advanced",
+    stageId,
+    selectedOptionId,
+    route: [],
+    runs: {},
+    trialHistory: [],
+    bestTrial: null,
+    compared: false,
+    saved: false,
+    loaded: false,
+    logReviewed: false,
+    hypothesisSubmitted: false,
+    round: 0,
+    maxRounds: definition.maxRounds || 0,
+    score: 0,
+    targetScore: definition.targetScore || 0,
+    defenderState: { alertLevel: 1, memory: 0, rateLimit: false },
+    duelSourceCode: definition.duelScript ? DUEL_SCRIPT_SAMPLE : "",
+    duelCompileState: definition.duelScript ? "editing" : "",
+    duelCompileErrors: [],
+    duelCompiledPlan: null,
+    duelLastRound: null,
+    activePlanSource: "gui",
+    planSelection: runtimeState.planSelection,
+    runtimeState,
+    runtimeEvents: runtimeState.historyState.events,
+    runtimeScore: null,
+    diagnostics: [],
+    feedback: definition.initialFeedback || definition.controlCaption,
+    nextFocus: definition.options[0]?.summary || "候補を選んで実行してください。",
+    notes: [
+      "この章以降の操作は、ゲーム内の抽象化された仮想システムだけを対象にします。",
+      `${definition.controlTitle}: ${definition.controlCaption}`,
+    ],
+  })
+}
+
+function completeAdvancedStage(state, feedback, nextFocus) {
+  const wasComplete = state.success
+  state.success = true
+  state.nextUnlocked = true
+  state.feedback = feedback
+  state.nextFocus = nextFocus
+  if (!wasComplete) {
+    appendRuntimeEvents(state, [
+      {
+        eventType: "stage.completed",
+        actor: "runtime",
+        result: "success",
+        severity: "notice",
+        message: feedback,
+        tags: ["stage", "completion"],
+        metadata: { success: true },
+      },
+    ])
+  }
+}
+
+function advancedRuntimeState(state) {
+  if (!state.runtimeState) {
+    state.runtimeState = createInitialRuntimeState(state.stageId || "4-1")
+  }
+  return state.runtimeState
+}
+
+function syncRuntimeMirror(state) {
+  const runtimeState = advancedRuntimeState(state)
+  state.runtimeEvents = runtimeState.historyState.events
+  state.runtimeScore = runtimeState.score || null
+  state.planSelection = runtimeState.planSelection
+  state.activePlanSource = runtimeState.planSelection?.activePlanSource || state.activePlanSource || "gui"
+  state.diagnostics = runtimeState.diagnostics || []
+}
+
+function appendRuntimeEvents(state, events) {
+  const runtimeState = advancedRuntimeState(state)
+  const normalizedEvents = events.map((item, index) =>
+    createGameEvent(
+      {
+        ...item,
+        stepIndex: item.stepIndex || runtimeState.historyState.events.length + index + 1,
+      },
+      runtimeState
+    )
+  )
+  const reducedState = reduceEvents(runtimeState, normalizedEvents)
+  const sourceEvents = reducedState.historyState.events.filter((item) => item.eventType !== "score.updated")
+  const score = calculateScore(sourceEvents, reducedState, getScoreProfileForStage(reducedState.stageId))
+  const scoreEvent = createGameEvent(
+    {
+      eventType: "score.updated",
+      actor: "runtime",
+      result: "normal",
+      severity: "info",
+      message: score.explanation,
+      tags: ["score"],
+      metadata: { score },
+    },
+    reducedState
+  )
+  state.runtimeState = reduceEvents(reducedState, [scoreEvent])
+  syncRuntimeMirror(state)
+}
+
+function addAdvancedTimeline(state, label, detail, kind = "system", runtimeInput = {}) {
+  state.timeline.push(event(label, detail, kind))
+  const eventType =
+    runtimeInput.eventType ||
+    (kind === "anomaly"
+      ? "defense.blocked"
+      : label.includes("保存")
+        ? "strategy.template.saved"
+        : label.includes("読込")
+          ? "strategy.template.loaded"
+          : label.includes("ログ")
+            ? "feedback.shown"
+            : "strategy.executed")
+  appendRuntimeEvents(state, [
+    {
+      eventType,
+      actor: runtimeInput.actor || (kind === "player" ? "player" : "system"),
+      result: runtimeInput.result || (kind === "anomaly" ? "blocked" : "normal"),
+      severity: runtimeInput.severity || (kind === "anomaly" ? "warning" : "info"),
+      message: detail,
+      tags: runtimeInput.tags || [kind === "anomaly" ? "defense" : "strategy"],
+      targetId: runtimeInput.targetId,
+      before: runtimeInput.before,
+      after: runtimeInput.after,
+      metadata: runtimeInput.metadata || {},
+    },
+  ])
+}
+
+function runSelectedAdvancedOption(stageId, state, definition) {
+  const option = advancedOption(definition, state.selectedOptionId)
+  const trial = createAdvancedTrial(stageId, option, state.trialHistory.length + 1)
+  state.runs[option.id] = trial
+  state.trialHistory.push(trial)
+  state.bestTrial = bestAdvancedTrial(state.trialHistory)
+  state.feedback = trial.blocked ? "防御反応により結果が抑えられました。" : "実行結果を記録しました。"
+  state.nextFocus = trial.summary
+  addAdvancedTimeline(state, option.label, `${trial.summary} / score ${trial.score}`, trial.blocked ? "anomaly" : "system", {
+    eventType: trial.blocked ? "defense.blocked" : "strategy.executed",
+    actor: "player",
+    result: trial.blocked ? "blocked" : "success",
+    severity: trial.blocked ? "warning" : "notice",
+    tags: ["strategy", ...(trial.blocked ? ["defense"] : [])],
+    targetId: trial.optionId,
+    after: {
+      gain: trial.gain,
+      detectionScore: trial.detection,
+      queueLength: trial.queue,
+      averageLatency: trial.latency,
+      blocked: trial.blocked,
+    },
+    metadata: {
+      trial,
+      gain: trial.gain,
+      detection: trial.detection,
+      queue: trial.queue,
+      latency: trial.latency,
+      success: !trial.blocked,
+      stealth: trial.detection < 35,
+    },
+  })
+  return trial
+}
+
+function runAdvancedBatch(stageId, state, definition) {
+  state.trialHistory = definition.options.map((option, index) => createAdvancedTrial(stageId, option, index + 1))
+  state.runs = Object.fromEntries(state.trialHistory.map((trial) => [trial.optionId, trial]))
+  state.bestTrial = bestAdvancedTrial(state.trialHistory)
+  state.compared = true
+  state.feedback = "候補をまとめて比較しました。"
+  state.nextFocus = state.bestTrial ? `${state.bestTrial.label} が現在のベストです。` : "候補を確認してください。"
+  addAdvancedTimeline(state, "一括比較", `${state.trialHistory.length}件の候補を評価しました。`, "system", {
+    eventType: "search.trial.completed",
+    actor: "runtime",
+    result: "success",
+    severity: "notice",
+    tags: ["search", "strategy"],
+    metadata: {
+      trial: state.bestTrial,
+      gain: state.bestTrial?.gain || 0,
+      detection: state.bestTrial?.detection || 0,
+      queue: state.bestTrial?.queue || 0,
+      latency: state.bestTrial?.latency || 0,
+      success: true,
+    },
+  })
+}
+
+function runAdvancedStageAction(stageId, previousState, action, payload = {}) {
+  const definition = advancedDefinition(stageId)
+  if (!definition) return null
+  const state = clone(previousState)
+
+  if (action === "retry") {
+    return createInitialAdvancedState(stageId)
+  }
+
+  if (action === "select_advanced_option") {
+    const option = advancedOption(definition, payload.optionId)
+    state.selectedOptionId = option.id
+    state.feedback = `${option.label} を選択しました。`
+    state.nextFocus = option.summary || "実行して結果を確認してください。"
+    advancedRuntimeState(state).uiState.selectedIds = [option.id]
+    syncRuntimeMirror(state)
+    return state
+  }
+
+  if (action === "compile_duel_script" && definition.duelScript) {
+    const compiled = compileDuelScript(state.duelSourceCode, { stageId, chapterId: advancedRuntimeState(state).chapterId })
+    state.duelCompileState = compiled.ok ? "compiled" : "compileError"
+    state.duelCompileErrors = compiled.errors
+    state.duelCompiledPlan = compiled.ir
+    const runtimeState = advancedRuntimeState(state)
+    runtimeState.planSelection.activePlanSource = "dsl"
+    runtimeState.planSelection.dslPlan = compiled.ir
+    runtimeState.planSelection.executablePlan = compiled.ok ? compiled.ir : runtimeState.planSelection.executablePlan
+    runtimeState.planSelection.staleSources = (runtimeState.planSelection.staleSources || []).filter((source) => source !== "dsl")
+    state.activePlanSource = "dsl"
+    state.feedback = compiled.ok ? "Duel DSL のコンパイルに成功しました。" : "Duel DSL にエラーがあります。"
+    state.nextFocus = compiled.ok ? `推定負荷 ${compiled.ir.metadata.estimatedLoad} / actions ${compiled.ir.actions.length}` : compiled.errors[0] || "エラーを確認してください。"
+    appendRuntimeEvents(state, [
+      compiled.ok
+        ? {
+            eventType: "plan.compiled",
+            actor: "compiler",
+            result: "success",
+            severity: "notice",
+            message: state.feedback,
+            tags: ["plan", "dsl"],
+            metadata: { plan: compiled.ir, gain: compiled.ir.metadata.estimatedGain || 0, success: true },
+          }
+        : {
+            eventType: "plan.validation.failed",
+            actor: "compiler",
+            result: "failure",
+            severity: "error",
+            message: state.feedback,
+            tags: ["plan", "dsl", "diagnostic"],
+            metadata: {
+              diagnostics: compiled.errors.map((message) =>
+                normalizeDiagnostic({
+                  category: "SyntaxError",
+                  message,
+                  source: { sourceType: "dsl" },
+                })
+              ),
+              invalidPlanPenalty: 1,
+            },
+          },
+    ])
+    return state
+  }
+
+  if (action === "run_duel_round" && definition.duelScript) {
+    if (!state.duelSourceCode.trim()) {
+      state.feedback = "有効なスクリプトを入力してください。"
+      state.nextFocus = "空のスクリプトは実行できません。"
+      appendRuntimeEvents(state, [
+        {
+          eventType: "plan.validation.failed",
+          actor: "runtime",
+          result: "failure",
+          severity: "error",
+          message: state.nextFocus,
+          tags: ["plan", "dsl", "validation"],
+          metadata: {
+            diagnostics: [
+              normalizeDiagnostic({
+                category: "VerificationError",
+                message: state.nextFocus,
+                source: { sourceType: "dsl" },
+              }),
+            ],
+          },
+        },
+      ])
+      return state
+    }
+
+    const runtimeState = advancedRuntimeState(state)
+    let resolved = resolveActivePlan(runtimeState.planSelection)
+    let executablePlan = resolved.plan
+    if (!executablePlan || runtimeState.planSelection.activePlanSource !== "dsl") {
+      const compiled = compileDuelScript(state.duelSourceCode, { stageId, chapterId: runtimeState.chapterId })
+      state.duelCompileState = compiled.ok ? "compiled" : "compileError"
+      state.duelCompileErrors = compiled.errors
+      state.duelCompiledPlan = compiled.ir
+      runtimeState.planSelection.activePlanSource = "dsl"
+      runtimeState.planSelection.dslPlan = compiled.ir
+      runtimeState.planSelection.staleSources = (runtimeState.planSelection.staleSources || []).filter((source) => source !== "dsl")
+      state.activePlanSource = "dsl"
+
+      if (!compiled.ok) {
+        appendRuntimeEvents(state, [
+          {
+            eventType: "plan.validation.failed",
+            actor: "compiler",
+            result: "failure",
+            severity: "error",
+            message: compiled.errors[0] || "コンパイルエラーがあります。",
+            tags: ["plan", "dsl", "diagnostic"],
+            metadata: {
+              diagnostics: compiled.errors.map((message) =>
+                normalizeDiagnostic({
+                  category: "SyntaxError",
+                  message,
+                  source: { sourceType: "dsl" },
+                })
+              ),
+              invalidPlanPenalty: 1,
+            },
+          },
+        ])
+        return state
+      }
+
+      runtimeState.planSelection.executablePlan = compiled.ir
+      appendRuntimeEvents(state, [
+        {
+          eventType: "plan.compiled",
+          actor: "compiler",
+          result: "success",
+          severity: "notice",
+          message: "Duel DSL のコンパイルに成功しました。",
+          tags: ["plan", "dsl"],
+          metadata: { plan: compiled.ir, gain: compiled.ir.metadata.estimatedGain || 0, success: true },
+        },
+      ])
+      resolved = resolveActivePlan(runtimeState.planSelection)
+      executablePlan = resolved.plan
+    }
+
+      const validation = validatePlanIR(executablePlan, runtimeState, {
+        maxExpandedActions: DUEL_COMPILER_LIMITS.maxExpandedActions,
+        maxEstimatedLoad: DUEL_COMPILER_LIMITS.maxVirtualLoad,
+        maxEstimatedRisk: COMMON_PLAN_LIMITS.maxEstimatedRisk,
+      })
+      if (!executablePlan || resolved.diagnostics.length || validation.status === "invalid") {
+        const diagnostics = [...resolved.diagnostics, ...validation.diagnostics]
+        state.feedback = "有効なスクリプトをコンパイルしてください。"
+        state.nextFocus = diagnostics[0]?.message || "コンパイルエラーがあります。"
+        appendRuntimeEvents(state, [
+          {
+            eventType: "plan.validation.failed",
+            actor: "runtime",
+            result: "failure",
+            severity: "error",
+            message: state.nextFocus,
+            tags: ["plan", "validation"],
+            metadata: { diagnostics },
+          },
+        ])
+        return state
+      }
+      executablePlan.validation = validation
+      runtimeState.planSelection.executablePlan = executablePlan
+      const round = simulateDuelRound(executablePlan, state.defenderState, state.round + 1)
+      state.round += 1
+      state.duelLastRound = round
+      state.defenderState = round.updatedDefenderState
+      state.score += round.scoreDelta
+      state.trialHistory.push({
+        id: `${stageId}-duel-${state.round}`,
+        index: state.round,
+        optionId: executablePlan.planId,
+        label: `${runtimeState.planSelection.activePlanSource.toUpperCase()}: ${executablePlan.planId}`,
+        gain: round.rawGain,
+        detection: round.detectionScore,
+        queue: round.queue,
+        latency: round.latency,
+        successRate: round.blocked ? 0.2 : 0.82,
+        blocked: round.blocked,
+        score: round.scoreDelta,
+        summary: round.summary,
+      })
+      state.bestTrial = bestAdvancedTrial(state.trialHistory)
+      addAdvancedTimeline(state, "Duel round", round.summary, round.blocked ? "anomaly" : "system", {
+        eventType: round.blocked ? "defense.blocked" : "strategy.executed",
+        actor: "runtime",
+        result: round.blocked ? "blocked" : "success",
+        severity: round.blocked ? "warning" : "notice",
+        tags: ["duel", "plan", ...(round.blocked ? ["defense"] : [])],
+        after: {
+          alertLevel: round.updatedDefenderState.alertLevel,
+          detectionScore: round.detectionScore,
+          blocked: round.blocked,
+          blockReason: round.updatedDefenderState.lastBlockReason,
+          activeRules: round.defenseEvents,
+          queueLength: round.queue,
+          averageLatency: round.latency,
+          virtualLoad: round.estimatedLoad,
+          rateLimitActive: round.blocked,
+        },
+        metadata: {
+          plan: executablePlan,
+          gain: round.rawGain,
+          detection: round.detectionScore,
+          queue: round.queue,
+          latency: round.latency,
+          success: !round.blocked,
+          scoreDelta: round.scoreDelta,
+        },
+      })
+      completeAdvancedStage(state, "初回ラウンドが完了しました。", "次は防御反応を読み、戦略を更新します。")
+      return state
+  }
+
+  if (action === "run_advanced_option") {
+    if (definition.successMode === "builderRun") {
+      if (!state.route.length) {
+        state.feedback = "少なくとも1つ以上の攻撃部品を追加してください。"
+        state.nextFocus = "部品を選んでから追加します。"
+        return state
+      }
+      const routeOptions = state.route.map((id) => advancedOption(definition, id))
+      const merged = {
+        id: "built_route",
+        label: "組み立てたルート",
+        steps: routeOptions.flatMap((option) => option.steps || [option.label]),
+        gain: routeOptions.reduce((sum, option) => sum + Number(option.gain || 0), 0),
+        detection: routeOptions.reduce((sum, option) => sum + Number(option.detection || 0), 0),
+        successRate: routeOptions.reduce((sum, option) => sum + Number(option.successRate ?? 0.5), 0) / routeOptions.length,
+        summary: "選んだ部品を1本のルートとして実行しました。",
+      }
+      const trial = createAdvancedTrial(stageId, merged, state.trialHistory.length + 1)
+      state.trialHistory.push(trial)
+      state.bestTrial = trial
+      addAdvancedTimeline(state, "ルート実行", trial.summary, "system")
+      completeAdvancedStage(state, "攻撃ルートを組み立てて実行できました。", "次は条件を変えて通るかを試します。")
+      return state
+    }
+
+    if (definition.successMode === "compareAll" || definition.successMode === "batchBest" || definition.successMode === "searchAndSave" || definition.successMode === "multiAxis") {
+      runAdvancedBatch(stageId, state, definition)
+      if (definition.successMode === "compareAll" || definition.successMode === "multiAxis") {
+        completeAdvancedStage(state, "候補を比較し、有力候補を特定できました。", state.bestTrial ? `${state.bestTrial.label} を確認してください。` : "比較結果を確認してください。")
+      }
+      return state
+    }
+
+    if (definition.successMode === "roundLoop" || definition.successMode === "campaign") {
+      const option = advancedOption(definition, state.selectedOptionId)
+      const trial = createAdvancedTrial(stageId, option, state.round + 1, { runIndex: state.round + 1 })
+      state.round += 1
+      state.score += Math.max(0, trial.score)
+      state.trialHistory.push(trial)
+      state.bestTrial = bestAdvancedTrial(state.trialHistory)
+      addAdvancedTimeline(state, `Round ${state.round}`, `${trial.label}: ${trial.summary}`, trial.blocked ? "anomaly" : "system")
+      if (state.score >= definition.targetScore || (option.id === definition.bestOptionId && state.round >= 2)) {
+        completeAdvancedStage(
+          state,
+          definition.successMode === "campaign"
+            ? "動的防御キャンペーンで目標を達成しました。"
+            : "観測、仮説、更新のループで改善できました。",
+          "複数ラウンドで防御側の変化に適応できています。"
+        )
+      } else if (state.round >= definition.maxRounds) {
+        state.feedback = "ラウンド上限に到達しました。"
+        state.nextFocus = "同じ方針を続けず、防御ログに合わせた更新を選んでください。"
+      } else {
+        state.feedback = `Round ${state.round} を記録しました。`
+        state.nextFocus = trial.summary
+      }
+      return state
+    }
+
+    if (definition.successMode === "repeatSame") {
+      const trial = runSelectedAdvancedOption(stageId, state, definition)
+      if (state.trialHistory.length >= 2) {
+        const first = state.trialHistory[0]
+        if (trial.detection > first.detection || trial.blocked !== first.blocked) {
+          completeAdvancedStage(state, "同じ戦略を繰り返すと、防御側が反応を変えました。", "ここからは防御の変化を観測する必要があります。")
+        }
+      }
+      return state
+    }
+
+    if (definition.successMode === "duelFirstRound") {
+      const option = advancedOption(definition, state.selectedOptionId)
+      if (option.id === "gui_empty") {
+        state.feedback = "攻撃計画を作成するか、有効なスクリプトをコンパイルしてください。"
+        state.nextFocus = "空の計画は実行できません。"
+        return state
+      }
+      const runtimeState = advancedRuntimeState(state)
+      const ir = guiPlanToDuelIr(option, { stageId, chapterId: runtimeState.chapterId })
+      const validation = validatePlanIR(ir, runtimeState, {
+        maxExpandedActions: DUEL_COMPILER_LIMITS.maxExpandedActions,
+        maxEstimatedLoad: DUEL_COMPILER_LIMITS.maxVirtualLoad,
+        maxEstimatedRisk: COMMON_PLAN_LIMITS.maxEstimatedRisk,
+      })
+      ir.validation = validation
+      if (validation.status === "invalid") {
+        state.feedback = "GUI計画を実行できません。"
+        state.nextFocus = validation.diagnostics[0]?.message || "計画を見直してください。"
+        appendRuntimeEvents(state, [
+          {
+            eventType: "plan.validation.failed",
+            actor: "runtime",
+            result: "failure",
+            severity: "error",
+            message: state.nextFocus,
+            tags: ["plan", "gui", "validation"],
+            metadata: { diagnostics: validation.diagnostics, invalidPlanPenalty: 1 },
+          },
+        ])
+        return state
+      }
+      runtimeState.planSelection.activePlanSource = "gui"
+      runtimeState.planSelection.guiPlan = ir
+      runtimeState.planSelection.executablePlan = ir
+      runtimeState.planSelection.staleSources = (runtimeState.planSelection.staleSources || []).filter((source) => source !== "gui")
+      state.activePlanSource = "gui"
+      appendRuntimeEvents(state, [
+        {
+          eventType: "plan.created",
+          actor: "runtime",
+          result: "success",
+          severity: "notice",
+          message: "GUI計画を PlanIR として登録しました。",
+          tags: ["plan", "gui"],
+          metadata: { plan: ir, gain: ir.metadata.estimatedGain || 0, success: true },
+        },
+      ])
+      const round = simulateDuelRound(ir, state.defenderState, state.round + 1)
+      state.round += 1
+      state.duelCompiledPlan = ir
+      state.duelLastRound = round
+      state.defenderState = round.updatedDefenderState
+      state.score += round.scoreDelta
+      state.trialHistory.push({
+        id: `${stageId}-gui-${state.round}`,
+        index: state.round,
+        optionId: option.id,
+        label: option.label,
+        gain: round.rawGain,
+        detection: round.detectionScore,
+        queue: round.queue,
+        latency: round.latency,
+        successRate: round.blocked ? 0.2 : 0.82,
+        blocked: round.blocked,
+        score: round.scoreDelta,
+        summary: round.summary,
+      })
+      state.bestTrial = bestAdvancedTrial(state.trialHistory)
+      addAdvancedTimeline(state, "GUI round", round.summary, round.blocked ? "anomaly" : "system", {
+        eventType: round.blocked ? "defense.blocked" : "strategy.executed",
+        actor: "runtime",
+        result: round.blocked ? "blocked" : "success",
+        severity: round.blocked ? "warning" : "notice",
+        tags: ["gui", "plan", ...(round.blocked ? ["defense"] : [])],
+        after: {
+          alertLevel: round.updatedDefenderState.alertLevel,
+          detectionScore: round.detectionScore,
+          blocked: round.blocked,
+          blockReason: round.updatedDefenderState.lastBlockReason,
+          activeRules: round.defenseEvents,
+          queueLength: round.queue,
+          averageLatency: round.latency,
+          virtualLoad: round.estimatedLoad,
+          rateLimitActive: round.blocked,
+        },
+        metadata: {
+          plan: ir,
+          gain: round.rawGain,
+          detection: round.detectionScore,
+          queue: round.queue,
+          latency: round.latency,
+          success: !round.blocked,
+          scoreDelta: round.scoreDelta,
+        },
+      })
+      completeAdvancedStage(state, "初回ラウンドが完了しました。", "次は防御反応を読み、戦略を更新します。")
+      return state
+    }
+
+    const trial = runSelectedAdvancedOption(stageId, state, definition)
+
+    if (definition.successMode === "runAtLeast" && Object.keys(state.runs).length >= definition.requiredRunCount) {
+      completeAdvancedStage(state, "強度を変えると資源圧力の差が見えました。", "負荷は利得だけでなく、遅延や検知にも影響します。")
+      return state
+    }
+
+    if (definition.successMode === "passAndBlock") {
+      const values = Object.values(state.runs)
+      if (values.some((item) => item.blocked) && values.some((item) => !item.blocked)) {
+        completeAdvancedStage(state, "通る条件と止まる条件の両方を確認できました。", "防御は条件や閾値に反応しています。")
+      }
+      return state
+    }
+
+    if (definition.successMode === "targetScore" && !trial.blocked && trial.gain >= definition.targetScore) {
+      completeAdvancedStage(state, "制約内で効率的な戦略を組めました。", "強い要素を全部使うより、適切な順で絞る方が有効です。")
+      return state
+    }
+
+    if (definition.successMode === "bestOption" && trial.optionId === definition.bestOptionId) {
+      completeAdvancedStage(state, "最も有効な候補を見つけました。", trial.summary)
+      return state
+    }
+
+    if (definition.successMode === "singleActionSuccess") {
+      completeAdvancedStage(state, "必要な確認または保存が完了しました。", trial.summary)
+      return state
+    }
+
+    return state
+  }
+
+  if (action === "add_route_part") {
+    const option = advancedOption(definition, state.selectedOptionId)
+    state.route.push(option.id)
+    state.feedback = `${option.label} をルートに追加しました。`
+    state.nextFocus = `現在の部品数: ${state.route.length}`
+    addAdvancedTimeline(state, "部品追加", option.label, "player")
+    return state
+  }
+
+  if (action === "compare_advanced") {
+    if (definition.successMode === "runRequiredAndCompare") {
+      const missing = definition.requiredOptionIds.filter((id) => !state.runs[id])
+      if (missing.length) {
+        state.feedback = "比較には両方のケース実行が必要です。"
+        state.nextFocus = "ケースAとケースBをそれぞれ実行してください。"
+        return state
+      }
+      state.compared = true
+      completeAdvancedStage(state, "弱点は組み合わせると影響が大きくなることを確認できました。", "先に作った有利状態が、次の不整合を支えています。")
+      return state
+    }
+
+    if (definition.successMode === "confirmBest") {
+      const trial = runSelectedAdvancedOption(stageId, state, definition)
+      state.compared = true
+      if (trial.afterGain <= definition.targetScore) {
+        completeAdvancedStage(state, "連鎖のボトルネックを止められました。", "依存関係の中心を塞ぐ方が効果的です。")
+      }
+      return state
+    }
+
+    runAdvancedBatch(stageId, state, definition)
+    return state
+  }
+
+  if (action === "review_advanced_log") {
+    state.logReviewed = true
+    state.feedback = "防御ログを確認しました。"
+    state.nextFocus = "検知スコアが上がったタイミングとログの理由を見比べてください。"
+    addAdvancedTimeline(state, "ログ確認", "繰り返しパターンと検知スコア上昇を確認しました。", "system")
+    return state
+  }
+
+  if (action === "save_advanced") {
+    if (definition.successMode === "saveAndLoad") {
+      state.saved = true
+      state.feedback = "戦略をテンプレートとして保存しました。"
+      state.nextFocus = "読み込むと再利用できることを確認できます。"
+      addAdvancedTimeline(state, "保存", "quiet-chain テンプレートを保存しました。", "player")
+      return state
+    }
+
+    if (definition.successMode === "searchAndSave" && !state.bestTrial) {
+      runAdvancedBatch(stageId, state, definition)
+    }
+
+    const selectedIsBest = state.selectedOptionId === definition.bestOptionId || state.bestTrial?.optionId === definition.bestOptionId
+    if (selectedIsBest || definition.successMode === "saveBest" || definition.successMode === "batchBest") {
+      state.saved = true
+      completeAdvancedStage(state, "評価結果を保存しました。", state.bestTrial ? `${state.bestTrial.label} を採用できます。` : "保存済みです。")
+    } else {
+      state.feedback = "まだ保存するには比較が足りません。"
+      state.nextFocus = "ベスト候補を確認してから保存してください。"
+    }
+    return state
+  }
+
+  if (action === "load_advanced") {
+    if (!state.saved) {
+      state.feedback = "先にテンプレートを保存してください。"
+      state.nextFocus = "名前付き戦略として保存すると読み込めます。"
+      return state
+    }
+    state.loaded = true
+    completeAdvancedStage(state, "戦略を保存し、再読込できました。", "次はこの戦略を条件付きで再利用します。")
+    addAdvancedTimeline(state, "読込", "quiet-chain テンプレートを読み込みました。", "system")
+    return state
+  }
+
+  if (action === "submit_hypothesis") {
+    const option = advancedOption(definition, state.selectedOptionId)
+    state.hypothesisSubmitted = true
+    if (state.logReviewed && option.id === definition.bestOptionId) {
+      completeAdvancedStage(state, "防御反応の原因に近い仮説を選択できました。", "観測から仮説を立てることが、適応の第一歩です。")
+    } else {
+      state.feedback = "仮説の根拠がまだ弱いです。"
+      state.nextFocus = "先にログを確認し、検知スコアが上がった理由と照合してください。"
+    }
+    return state
+  }
+
+  return state
+}
+
+function stripDuelComment(line) {
+  const quoted = line.match(/^([^"]*(?:"[^"]*"[^"]*)*)$/)
+  if (!quoted) return line
+  let inString = false
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index]
+    if (char === '"') inString = !inString
+    if (char === "#" && !inString) return line.slice(0, index)
+  }
+  return line
+}
+
+function normalizeDuelLines(sourceCode) {
+  return String(sourceCode ?? "")
+    .replace(/\t/g, "  ")
+    .split("\n")
+    .map((raw, index) => {
+      const withoutComment = stripDuelComment(raw).replace(/\s+$/, "")
+      return {
+        raw,
+        text: withoutComment.trim(),
+        indent: withoutComment.match(/^ */)?.[0].length || 0,
+        line: index + 1,
+      }
+    })
+    .filter((line) => line.text.length > 0)
+}
+
+function parseDuelValue(rawValue) {
+  if (/^".*"$/.test(rawValue)) return rawValue.slice(1, -1)
+  if (rawValue === "true") return true
+  if (rawValue === "false") return false
+  if (/^-?\d+(?:\.\d+)?$/.test(rawValue)) return Number(rawValue)
+  return { ref: rawValue }
+}
+
+function parseDuelArgs(argText, line) {
+  if (!argText.trim()) return {}
+  const args = {}
+  const pattern = /([A-Za-z_][A-Za-z0-9_]*)=("[^"]*"|true|false|-?\d+(?:\.\d+)?|[A-Za-z_][A-Za-z0-9_]*)/g
+  let cursor = 0
+  let match
+  while ((match = pattern.exec(argText))) {
+    if (argText.slice(cursor, match.index).trim()) {
+      throw new Error(`Line ${line}: invalid argument syntax`)
+    }
+    args[match[1]] = parseDuelValue(match[2])
+    cursor = match.index + match[0].length
+  }
+  if (argText.slice(cursor).trim()) {
+    throw new Error(`Line ${line}: invalid argument syntax`)
+  }
+  return args
+}
+
+function parseDuelCondition(text, line) {
+  const match = text.match(/^(.+?)\s*(==|!=|>=|<=|>|<)\s*(.+)$/)
+  if (!match) throw new Error(`Line ${line}: invalid condition`)
+  return {
+    left: parseDuelValue(match[1].trim()),
+    comparator: match[2],
+    right: parseDuelValue(match[3].trim()),
+  }
+}
+
+function parseDuelBlock(lines, cursor, indent) {
+  const body = []
+  let index = cursor
+  while (index < lines.length) {
+    const line = lines[index]
+    if (line.indent < indent) break
+    if (line.indent > indent) {
+      throw new Error(`Line ${line.line}: unexpected indentation`)
+    }
+    if (line.text === "else:") break
+
+    let match = line.text.match(/^use\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s+(.*))?$/)
+    if (match) {
+      body.push({ type: "use", line: line.line, actionId: match[1], args: parseDuelArgs(match[2] || "", line.line) })
+      index += 1
+      continue
+    }
+
+    if (line.text === "run") {
+      body.push({ type: "run", line: line.line })
+      index += 1
+      continue
+    }
+
+    match = line.text.match(/^observe\s+([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*)$/)
+    if (match) {
+      body.push({ type: "observe", line: line.line, path: match[1] })
+      index += 1
+      continue
+    }
+
+    match = line.text.match(/^save(?:\s+([A-Za-z_][A-Za-z0-9_]*))?$/)
+    if (match) {
+      body.push({ type: "save", line: line.line, name: match[1] || "" })
+      index += 1
+      continue
+    }
+
+    match = line.text.match(/^candidate\s+([A-Za-z_][A-Za-z0-9_]*)$/)
+    if (match) {
+      body.push({ type: "candidate", line: line.line, candidateId: match[1] })
+      index += 1
+      continue
+    }
+
+    match = line.text.match(/^repeat\s+(\d+):$/)
+    if (match) {
+      const parsed = parseDuelBlock(lines, index + 1, indent + 2)
+      body.push({ type: "repeat", line: line.line, count: Number(match[1]), body: parsed.body })
+      index = parsed.cursor
+      continue
+    }
+
+    match = line.text.match(/^for\s+([A-Za-z_][A-Za-z0-9_]*)\s+in\s+(-?\d+)\.\.(-?\d+):$/)
+    if (match) {
+      const parsed = parseDuelBlock(lines, index + 1, indent + 2)
+      body.push({ type: "for", line: line.line, variable: match[1], start: Number(match[2]), end: Number(match[3]), body: parsed.body })
+      index = parsed.cursor
+      continue
+    }
+
+    match = line.text.match(/^if\s+(.+):$/)
+    if (match) {
+      const parsedThen = parseDuelBlock(lines, index + 1, indent + 2)
+      let elseBody = []
+      index = parsedThen.cursor
+      if (lines[index]?.indent === indent && lines[index]?.text === "else:") {
+        const parsedElse = parseDuelBlock(lines, index + 1, indent + 2)
+        elseBody = parsedElse.body
+        index = parsedElse.cursor
+      }
+      body.push({ type: "if", line: line.line, condition: parseDuelCondition(match[1], line.line), thenBody: parsedThen.body, elseBody })
+      continue
+    }
+
+    match = line.text.match(/^choose\s+([A-Za-z_][A-Za-z0-9_]*)\s+by\s+([A-Za-z_][A-Za-z0-9_]*):$/)
+    if (match) {
+      const parsed = parseDuelBlock(lines, index + 1, indent + 2)
+      body.push({ type: "choose", line: line.line, target: match[1], metric: match[2], body: parsed.body })
+      index = parsed.cursor
+      continue
+    }
+
+    throw new Error(`Line ${line.line}: unknown command '${line.text.split(/\s+/)[0]}'`)
+  }
+  return { body, cursor: index }
+}
+
+function parseDuelProgram(sourceCode) {
+  const lines = normalizeDuelLines(sourceCode)
+  const program = { params: [], plans: [] }
+  let index = 0
+  while (index < lines.length) {
+    const line = lines[index]
+    if (line.indent !== 0) throw new Error(`Line ${line.line}: top-level declarations must not be indented`)
+    let match = line.text.match(/^param\s+([A-Za-z_][A-Za-z0-9_]*)\s+in\s+(-?\d+)\.\.(-?\d+)$/)
+    if (match) {
+      program.params.push({ type: "param", line: line.line, name: match[1], start: Number(match[2]), end: Number(match[3]) })
+      index += 1
+      continue
+    }
+    match = line.text.match(/^plan\s+([A-Za-z_][A-Za-z0-9_]*):$/)
+    if (match) {
+      const parsed = parseDuelBlock(lines, index + 1, 2)
+      if (!parsed.body.length) throw new Error(`Line ${line.line}: plan must contain at least one statement`)
+      program.plans.push({ type: "plan", line: line.line, name: match[1], body: parsed.body })
+      index = parsed.cursor
+      continue
+    }
+    throw new Error(`Line ${line.line}: expected plan or param declaration`)
+  }
+  if (!program.plans.length) throw new Error("Line 1: at least one plan is required")
+  return program
+}
+
+function resolveDuelReference(value, scope) {
+  if (!value || typeof value !== "object" || !("ref" in value)) return value
+  if (value.ref in scope.variables) return scope.variables[value.ref]
+  if (value.ref in scope.params) return scope.params[value.ref]
+  return value
+}
+
+function evaluateDuelCondition(condition, scope) {
+  const observationValues = {
+    "defense.alert_level": scope.defenderState?.alertLevel ?? 1,
+    "defense.rate_limit": scope.defenderState?.rateLimit ? 1 : 0,
+    "round.last_block_reason": scope.defenderState?.lastBlockReason || "none",
+    "round.score_delta": scope.defenderState?.lastScoreDelta || 0,
+    "resource.queue": scope.defenderState?.queue || 0,
+    "score.current": scope.defenderState?.score || 0,
+  }
+
+  function valueOf(input) {
+    if (input && typeof input === "object" && "ref" in input) {
+      if (input.ref in observationValues) return observationValues[input.ref]
+      return resolveDuelReference(input, scope)
+    }
+    return input
+  }
+
+  const left = valueOf(condition.left)
+  const right = valueOf(condition.right)
+  if (condition.comparator === "==") return left === right
+  if (condition.comparator === "!=") return left !== right
+  if (condition.comparator === ">") return Number(left) > Number(right)
+  if (condition.comparator === ">=") return Number(left) >= Number(right)
+  if (condition.comparator === "<") return Number(left) < Number(right)
+  if (condition.comparator === "<=") return Number(left) <= Number(right)
+  return false
+}
+
+function validateDuelActionArg(actionId, argName, rawValue, line, scope) {
+  const action = DUEL_ACTIONS[actionId]
+  const schema = action.params[argName]
+  if (!schema) throw new Error(`Line ${line}: action '${actionId}' does not accept argument '${argName}'`)
+  const value = resolveDuelReference(rawValue, scope)
+  if (value && typeof value === "object" && "ref" in value) {
+    throw new Error(`Line ${line}: unknown variable '${value.ref}'`)
+  }
+  if (schema.type === "number") {
+    if (typeof value !== "number" || Number.isNaN(value)) throw new Error(`Line ${line}: '${argName}' must be a number`)
+    if (value < schema.min || value > schema.max) throw new Error(`Line ${line}: '${argName}' must be between ${schema.min} and ${schema.max}`)
+  }
+  if (schema.type === "string") {
+    if (typeof value !== "string") throw new Error(`Line ${line}: '${argName}' must be a string`)
+    if (schema.values && !schema.values.includes(value)) {
+      throw new Error(`Line ${line}: '${argName}' must be one of ${schema.values.join(", ")}`)
+    }
+  }
+  return value
+}
+
+function buildDuelIr(program, options = {}) {
+  const plan = program.plans[0]
+  const params = {}
+  const actions = []
+  const diagnostics = []
+  const observations = []
+  const choices = []
+  const scope = {
+    params: {},
+    variables: {},
+    defenderState: options.defenderState || {},
+  }
+  let statementCount = 0
+  let runCount = 0
+  let savedName = ""
+
+  for (const param of program.params) {
+    if (param.start > param.end) throw new Error(`Line ${param.line}: range start must be <= range end`)
+    if (param.end - param.start > DUEL_COMPILER_LIMITS.maxLoopIterations) {
+      throw new Error(`Line ${param.line}: parameter range exceeds maximum allowed span`)
+    }
+    params[param.name] = { type: "range", from: param.start, to: param.end }
+    scope.params[param.name] = param.start
+  }
+
+  function bump(line) {
+    statementCount += 1
+    if (statementCount > DUEL_COMPILER_LIMITS.maxStatements) {
+      throw new Error(`Line ${line}: statement count exceeds maximum allowed value`)
+    }
+  }
+
+  function emitStatements(statements) {
+    for (const statement of statements) {
+      bump(statement.line)
+      if (statement.type === "use") {
+        const action = DUEL_ACTIONS[statement.actionId]
+        if (!action) throw new Error(`Line ${statement.line}: unknown action '${statement.actionId}' is not allowed in Duel DSL.`)
+        const paramsForAction = {}
+        for (const [argName, argValue] of Object.entries(statement.args)) {
+          paramsForAction[argName] = validateDuelActionArg(statement.actionId, argName, argValue, statement.line, scope)
+        }
+        for (const [argName, schema] of Object.entries(action.params)) {
+          if (!(argName in paramsForAction) && schema.defaultValue !== undefined) {
+            paramsForAction[argName] = schema.defaultValue
+          }
+        }
+        actions.push({
+          actionId: statement.actionId,
+          actionType: statement.actionId,
+          type: statement.actionId,
+          label: action.label,
+          params: paramsForAction,
+          estimatedCost: action.estimatedCost,
+          estimatedLoad: action.estimatedLoad,
+          estimatedRisk: action.risk,
+          risk: action.risk,
+          gain: action.gain,
+          tags: clone(action.tags),
+          line: statement.line,
+        })
+        if (actions.length > DUEL_COMPILER_LIMITS.maxExpandedActions) {
+          throw new Error(`Line ${statement.line}: expanded action count exceeds maximum allowed value`)
+        }
+      } else if (statement.type === "run") {
+        runCount += 1
+      } else if (statement.type === "observe") {
+        if (!DUEL_OBSERVATIONS.has(statement.path)) {
+          throw new Error(`Line ${statement.line}: observation '${statement.path}' is not available`)
+        }
+        observations.push(statement.path)
+      } else if (statement.type === "save") {
+        savedName = statement.name || plan.name
+      } else if (statement.type === "repeat") {
+        if (statement.count < 1 || statement.count > DUEL_COMPILER_LIMITS.maxLoopIterations) {
+          throw new Error(`Line ${statement.line}: repeat count exceeds maximum allowed value.`)
+        }
+        for (let index = 0; index < statement.count; index += 1) {
+          emitStatements(statement.body)
+        }
+      } else if (statement.type === "for") {
+        if (statement.start > statement.end) throw new Error(`Line ${statement.line}: range start must be <= range end`)
+        const loopCount = statement.end - statement.start + 1
+        if (loopCount > DUEL_COMPILER_LIMITS.maxLoopIterations) {
+          throw new Error(`Line ${statement.line}: loop range exceeds maximum allowed value`)
+        }
+        for (let value = statement.start; value <= statement.end; value += 1) {
+          scope.variables[statement.variable] = value
+          emitStatements(statement.body)
+        }
+        delete scope.variables[statement.variable]
+      } else if (statement.type === "if") {
+        observations.push(
+          ...[statement.condition.left, statement.condition.right]
+            .filter((value) => value && typeof value === "object" && "ref" in value && DUEL_OBSERVATIONS.has(value.ref))
+            .map((value) => value.ref)
+        )
+        emitStatements(evaluateDuelCondition(statement.condition, scope) ? statement.thenBody : statement.elseBody)
+      } else if (statement.type === "choose") {
+        const candidates = statement.body.filter((child) => child.type === "candidate").map((child) => child.candidateId)
+        if (!candidates.length) throw new Error(`Line ${statement.line}: choose block must contain candidates`)
+        choices.push({ target: statement.target, metric: statement.metric, candidates })
+      } else if (statement.type === "candidate") {
+        diagnostics.push(`Line ${statement.line}: candidate '${statement.candidateId}' is only meaningful inside choose`)
+      }
+    }
+  }
+
+  emitStatements(plan.body)
+
+  const estimatedLoad = actions.reduce((sum, action) => sum + action.estimatedLoad, 0)
+  const estimatedRisk = actions.reduce((sum, action) => sum + Math.max(0, action.risk), 0)
+  const riskTags = [...new Set(actions.flatMap((action) => action.tags))]
+  if (!actions.length) throw new Error(`Line ${plan.line}: plan must contain at least one use action`)
+  if (actions.length > DUEL_COMPILER_LIMITS.maxRoundActions) {
+    throw new Error(`Line ${plan.line}: round action count exceeds maximum allowed value`)
+  }
+  if (estimatedLoad > DUEL_COMPILER_LIMITS.maxVirtualLoad) {
+    throw new Error(`Line ${plan.line}: virtual load exceeds round budget`)
+  }
+
+  const planIr = createPlanIR({
+    planId: plan.name,
+    displayName: plan.name,
+    source: {
+      sourceType: "dsl",
+      sourceId: plan.name,
+      sourceLabel: "Duel DSL",
+      dslSourceHash: String(statementCount),
+    },
+    chapterId: options.chapterId,
+    stageId: options.stageId,
+    parameters: params,
+    actions,
+    metadata: {
+      usesObservation: observations.length > 0,
+      usesLoop: program.params.length > 0 || statementCount > actions.length + runCount,
+      usesBranch: choices.length > 0,
+      usesTemplate: false,
+      observations: [...new Set(observations)],
+      choices,
+      runCount,
+      savedName,
+      statementCount,
+      safetyBudget: clone(DUEL_COMPILER_LIMITS),
+    },
+    validation: { status: "valid", checkedAt: 0, diagnostics: [] },
+    now: options.now,
+  })
+  planIr.metadata.estimatedLoad = estimatedLoad
+  planIr.metadata.estimatedRisk = estimatedRisk
+  planIr.metadata.estimatedGain = actions.reduce((sum, action) => sum + action.gain, 0)
+  planIr.metadata.riskTags = riskTags
+  return planIr
+}
+
+function checkDuelSafety(sourceCode) {
+  const source = String(sourceCode ?? "")
+  const blockedPatterns = [
+    { pattern: /\b(fetch|XMLHttpRequest|WebSocket|import|eval|Function|document|window|localStorage)\b/, message: "external browser or code execution API is not allowed" },
+    { pattern: /https?:\/\//, message: "external URL is not allowed" },
+    { pattern: /(?:^|\s)(?:\/|~\/|\.\.?\/)[^\s"]+/, message: "file path is not allowed" },
+    { pattern: /\b(curl|wget|rm|chmod|shell|exec|spawn|network|socket)\b/i, message: "OS or network command is not allowed" },
+    { pattern: /\bwhile\b/, message: "unbounded loop is not allowed" },
+  ]
+  for (const item of blockedPatterns) {
+    if (item.pattern.test(source)) {
+      throw new Error(`Line 1: ${item.message}`)
+    }
+  }
+}
+
+export function compileDuelScript(sourceCode, options = {}) {
+  try {
+    checkDuelSafety(sourceCode)
+    const ast = parseDuelProgram(sourceCode)
+    const ir = buildDuelIr(ast, options)
+    const validation = validatePlanIR(ir, null, {
+      maxExpandedActions: DUEL_COMPILER_LIMITS.maxExpandedActions,
+      maxEstimatedLoad: DUEL_COMPILER_LIMITS.maxVirtualLoad,
+      maxEstimatedRisk: COMMON_PLAN_LIMITS.maxEstimatedRisk,
+    })
+    ir.validation = validation
+    if (validation.status === "invalid") {
+      return { ok: false, ast, ir: null, errors: validation.diagnostics.map((diagnostic) => diagnostic.message), diagnostics: validation.diagnostics }
+    }
+    return { ok: true, ast, ir, errors: [], diagnostics: [] }
+  } catch (error) {
+    return { ok: false, ast: null, ir: null, errors: [String(error.message || error)], diagnostics: [] }
+  }
+}
+
+export function guiPlanToDuelIr(option = {}, options = {}) {
+  const actionIds =
+    option.id === "gui_balanced"
+      ? ["sequence_shift", "refund_probe", "low_noise_probe"]
+      : option.steps?.filter((step) => DUEL_ACTIONS[step]) || []
+  const actions = actionIds.map((actionId) => {
+    const action = DUEL_ACTIONS[actionId]
+    const params = Object.fromEntries(
+      Object.entries(action.params).map(([name, schema]) => [name, schema.defaultValue])
+    )
+    return {
+      type: actionId,
+      label: action.label,
+      params,
+      estimatedCost: action.estimatedCost,
+      estimatedLoad: action.estimatedLoad,
+      estimatedRisk: action.risk,
+      risk: action.risk,
+      gain: action.gain,
+      tags: clone(action.tags),
+      line: 0,
+    }
+  })
+  const planIr = createPlanIR({
+    planId: option.id || "gui_plan",
+    displayName: option.label || option.id || "GUI Plan",
+    source: {
+      sourceType: "gui",
+      sourceId: option.id || "gui_plan",
+      sourceLabel: option.label || "GUI Plan",
+      guiBuilderId: "advanced-option-builder",
+    },
+    chapterId: options.chapterId,
+    stageId: options.stageId,
+    actions,
+    metadata: {
+      usesObservation: false,
+      usesLoop: false,
+      usesBranch: false,
+      usesTemplate: false,
+    },
+    validation: { status: "valid", checkedAt: 0, diagnostics: [] },
+    now: options.now,
+  })
+  planIr.metadata.estimatedLoad = planIr.metadata.estimatedTotalLoad
+  planIr.metadata.estimatedRisk = planIr.metadata.estimatedDetectionRisk
+  planIr.metadata.estimatedGain = actions.reduce((sum, action) => sum + action.gain, 0)
+  return planIr
+}
+
+export function simulateDuelRound(duelIr, defenderState = {}, roundIndex = 1) {
+  const actions = Array.isArray(duelIr?.actions) ? duelIr.actions : []
+  const rawGain = actions.reduce((sum, action) => sum + Number(action.gain || 0), 0)
+  const estimatedLoad = actions.reduce((sum, action) => sum + Number(action.estimatedLoad || 0), 0)
+  const actionRisk = actions.reduce((sum, action) => sum + Math.max(0, Number(action.risk || 0)), 0)
+  const alertLevel = Number(defenderState.alertLevel || 1)
+  const memory = Number(defenderState.memory || 0)
+  const repeatedPenalty = memory > 0 ? Math.min(24, memory * 8) : 0
+  const detectionScore = Math.max(0, Math.round(actionRisk + alertLevel * 6 + repeatedPenalty - actions.filter((action) => action.tags.includes("stealth")).length * 10))
+  const queue = Math.max(0, estimatedLoad + Math.floor(detectionScore / 24))
+  const latency = 45 + queue * 22
+  const blocked = detectionScore >= 72 || estimatedLoad > DUEL_COMPILER_LIMITS.maxVirtualLoad
+  const scoreDelta = Math.max(0, Math.round(rawGain - detectionScore / 9 - (blocked ? 8 : 0) - latency / 90))
+  const summary = blocked
+    ? "防御側が高い検知スコアに反応し、ラウンド利得を抑えました。"
+    : "計画は仮想環境内で実行され、防御反応を受けつつスコアを得ました。"
+  return {
+    roundIndex,
+    rawGain,
+    estimatedLoad,
+    detectionScore,
+    queue,
+    latency,
+    blocked,
+    scoreDelta,
+    summary,
+    roundEvents: actions.map((action) => `${action.label}: ${JSON.stringify(action.params)}`),
+    defenseEvents: [
+      blocked ? "rate_limit_triggered" : "monitor_only",
+      detectionScore >= 50 ? "pattern_score_increased" : "low_signal",
+    ],
+    updatedDefenderState: {
+      alertLevel: Math.min(5, alertLevel + (blocked ? 1 : detectionScore >= 50 ? 0.5 : 0)),
+      memory: memory + 1,
+      rateLimit: blocked,
+      queue,
+      lastBlockReason: blocked ? "detection_threshold" : "none",
+      lastScoreDelta: scoreDelta,
+      score: Number(defenderState.score || 0) + scoreDelta,
+    },
+  }
 }
 
 export function evaluateStage12Interrupt(progress) {
@@ -1217,12 +3944,18 @@ export function createInitialStageState(stageId) {
         nextFocus: "比較する候補を増やすと、ベスト条件を見つけやすくなります。",
         notes: ["このステージでは GUI ベースの半自動探索を体験します。"],
       })
-    default:
+    default: {
+      const advancedState = createInitialAdvancedState(stageId)
+      if (advancedState) return advancedState
       throw new Error(`unknown stage: ${stageId}`)
+    }
   }
 }
 
 export function runStageAction(stageId, previousState, action, payload = {}) {
+  const advancedState = runAdvancedStageAction(stageId, previousState, action, payload)
+  if (advancedState) return advancedState
+
   const state = clone(previousState)
 
   switch (stageId) {

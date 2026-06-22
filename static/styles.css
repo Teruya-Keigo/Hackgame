@@ -960,6 +960,119 @@ input {
   background: linear-gradient(180deg, #5a3a16, #2b180a);
 }
 
+.advanced-option-list {
+  display: grid;
+  gap: 8px;
+}
+
+.advanced-option {
+  border: 1px solid rgba(79, 114, 135, 0.68);
+  background: rgba(8, 14, 20, 0.88);
+  color: var(--text);
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.advanced-option.selected {
+  border-color: rgba(255, 215, 155, 0.72);
+  background: linear-gradient(180deg, rgba(47, 32, 13, 0.96), rgba(13, 20, 28, 0.96));
+}
+
+.advanced-option.done {
+  border-color: rgba(117, 240, 191, 0.72);
+}
+
+.advanced-option.warn {
+  border-color: rgba(255, 179, 130, 0.72);
+}
+
+.advanced-option-head,
+.advanced-option-metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.advanced-option-head {
+  color: #eefbff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.advanced-option-summary,
+.advanced-option-metrics {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.advanced-layout {
+  display: grid;
+  gap: 12px;
+}
+
+.advanced-card {
+  border: 1px solid rgba(71, 104, 123, 0.55);
+  background: rgba(9, 16, 24, 0.9);
+  padding: 12px;
+  min-width: 0;
+}
+
+.advanced-card.good {
+  border-color: rgba(117, 240, 191, 0.72);
+  background: rgba(10, 34, 28, 0.72);
+}
+
+.advanced-card.warn {
+  border-color: rgba(255, 179, 130, 0.72);
+  background: rgba(38, 22, 16, 0.74);
+}
+
+.advanced-card-title {
+  color: var(--amber);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.advanced-step-list {
+  display: grid;
+  gap: 7px;
+}
+
+.advanced-step {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: #e8f8ff;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.advanced-step span {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border: 1px solid rgba(123, 195, 255, 0.55);
+  display: grid;
+  place-items: center;
+  color: #dff5ff;
+  font-size: 10px;
+}
+
+.advanced-card-note,
+.duel-editor-block {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 .order-list {
   display: grid;
   gap: 8px;
