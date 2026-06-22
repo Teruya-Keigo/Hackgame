@@ -4,5 +4,6 @@ __pycache__/
 .venv/
 node_modules/
 dist/
+public_build/
 .env
 .env.local
