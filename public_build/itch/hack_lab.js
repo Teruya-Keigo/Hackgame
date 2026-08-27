@@ -390,7 +390,7 @@
 
   function parseHackScript(source) {
     const plan = cloneDefaultPlan();
-    const meta = { ignoredDirect: [], clamped: [], legacyJson: false };
+    const meta = { ignoredDirect: [], legacyJson: false };
     const tokens = tokenizeHackScript(source);
     const seenBlocks = new Set();
     let cursor = 0;
@@ -459,17 +459,9 @@
         throw createParserError(`${fieldName} には数値が必要です。`, token);
       }
 
-      const limits = {
-        probeBudget: [1, 6],
-        stabilityBias: [0, 100],
-        entropyGate: [0, 100],
-      };
-      const [min, max] = limits[fieldName];
-      const normalized = clamp(numeric, min, max);
-      plan[chapterKey][fieldName] = normalized;
-      if (normalized !== numeric) {
-        meta.clamped.push(`${chapterKey}.${fieldName}: ${numeric} -> ${normalized}`);
-      }
+      if (fieldName === "probeBudget") plan[chapterKey].probeBudget = clamp(numeric, 1, 6);
+      if (fieldName === "stabilityBias") plan[chapterKey].stabilityBias = clamp(numeric, 0, 100);
+      if (fieldName === "entropyGate") plan[chapterKey].entropyGate = clamp(numeric, 0, 100);
     }
 
     function parseStatement(chapterKey) {
@@ -566,7 +558,7 @@
 
   function sanitizePlan(raw) {
     const out = cloneDefaultPlan();
-    const meta = { ignoredDirect: [], clamped: [] };
+    const meta = { ignoredDirect: [] };
     if (!raw || typeof raw !== "object") return { plan: out, meta };
 
     for (const key of chapterKeys()) {
@@ -581,18 +573,9 @@
       const stabilityBias = Number(src.stabilityBias);
       const entropyGate = Number(src.entropyGate);
 
-      for (const [fieldName, numeric, min, max] of [
-        ["probeBudget", probeBudget, 1, 6],
-        ["stabilityBias", stabilityBias, 0, 100],
-        ["entropyGate", entropyGate, 0, 100],
-      ]) {
-        if (!Number.isFinite(numeric)) continue;
-        const normalized = clamp(numeric, min, max);
-        out[key][fieldName] = normalized;
-        if (normalized !== numeric) {
-          meta.clamped.push(`${key}.${fieldName}: ${numeric} -> ${normalized}`);
-        }
-      }
+      if (Number.isFinite(probeBudget)) out[key].probeBudget = clamp(probeBudget, 1, 6);
+      if (Number.isFinite(stabilityBias)) out[key].stabilityBias = clamp(stabilityBias, 0, 100);
+      if (Number.isFinite(entropyGate)) out[key].entropyGate = clamp(entropyGate, 0, 100);
       out[key].focusMode = normalizeFocusMode(String(src.focusMode || "balanced"));
     }
 
@@ -1060,9 +1043,6 @@
       } else if (parsed.meta.ignoredDirect.length) {
         setStatus("検証OK。ただし sweetLeft/sweetWidth の直接指定は無効化されました。", "warn");
         setLog(`無効化された直接指定: ${parsed.meta.ignoredDirect.join(", ")}`, "warn");
-      } else if (parsed.meta.clamped?.length) {
-        setStatus("検証OK。範囲外の値を許可された境界へ補正しました。", "warn");
-        setLog(`境界補正: ${parsed.meta.clamped.join(", ")}`, "warn");
       } else if (!silentSuccess) {
         setStatus("検証OK。保存すると本編に反映されます。");
         setLog("検証成功。プレビューを更新しました。", "ok");

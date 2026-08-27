@@ -11,6 +11,7 @@ from debug_dex_game import run_game
 
 ROOT = Path(__file__).parent
 STATIC_DIR = ROOT / "static"
+MAX_REQUEST_BODY_BYTES = 1024 * 1024
 
 
 def sample_orders() -> Dict[str, Any]:
@@ -133,7 +134,23 @@ class GameHandler(BaseHTTPRequestHandler):
             self.send_error(HTTPStatus.NOT_FOUND, "Not found")
             return
 
-        length = int(self.headers.get("Content-Length", "0"))
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+        except (TypeError, ValueError):
+            self._send_json({"error": "invalid Content-Length"}, status=400)
+            return
+        if length < 0:
+            self._send_json({"error": "invalid Content-Length"}, status=400)
+            return
+        if length > MAX_REQUEST_BODY_BYTES:
+            self._send_json(
+                {
+                    "error": "payload too large",
+                    "max_bytes": MAX_REQUEST_BODY_BYTES,
+                },
+                status=HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
+            )
+            return
         raw = self.rfile.read(length) if length > 0 else b"{}"
         try:
             payload = json.loads(raw.decode("utf-8"))
@@ -147,6 +164,9 @@ class GameHandler(BaseHTTPRequestHandler):
         try:
             batch = json.dumps({"orders": orders}, ensure_ascii=False)
             result = asyncio.run(run_game(batch, algo=algo, leverage=leverage))
+        except ValueError as exc:
+            self._send_json({"error": f"invalid payload: {exc}"}, status=400)
+            return
         except Exception as exc:
             self._send_json({"error": f"execution failed: {exc}"}, status=500)
             return

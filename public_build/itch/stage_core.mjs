@@ -1610,7 +1610,6 @@ const ADVANCED_STAGE_DEFINITIONS = {
     secondaryLabel: "ベストを保存",
     successMode: "searchAndSave",
     bestOptionId: "search_profit",
-    rankingMetric: "gain",
     options: [
       { id: "search_small", label: "候補数3", steps: ["狭い範囲"], gain: 18, detection: 22, successRate: 0.78, summary: "探索範囲が狭めです。" },
       { id: "search_profit", label: "候補数6 / 利得優先", steps: ["split 2..6", "delay 1..3"], gain: 28, detection: 44, successRate: 0.64, summary: "利得最大候補を見つけます。" },
@@ -1796,7 +1795,7 @@ const ADVANCED_STAGE_DEFINITIONS = {
     targetScore: 45,
     options: [
       { id: "campaign_repeat", label: "同じ計画を固定", steps: ["固定"], gain: 8, detection: 74, blocked: true, successRate: 0.2, summary: "履歴依存防御に捕まります。" },
-      { id: "campaign_adapt", label: "防御状態ごとに更新", steps: ["観測", "低ノイズ", "必要時に利得"], gain: 19, detection: 28, successRate: 0.84, score: 15, summary: "複数ラウンドで改善します。" },
+      { id: "campaign_adapt", label: "防御状態ごとに更新", steps: ["観測", "低ノイズ", "必要時に利得"], gain: 19, detection: 28, successRate: 0.84, summary: "複数ラウンドで改善します。" },
       { id: "campaign_safe", label: "安全固定", steps: ["低ノイズのみ"], gain: 12, detection: 10, successRate: 0.94, summary: "安定しますが目標スコアは伸びにくいです。" },
     ],
   },
@@ -1835,10 +1834,7 @@ export function simulateAdvancedOption(stageId, optionId, context = {}) {
   let gain = Number(option.gain || 0)
   let blocked = Boolean(option.blocked)
 
-  const repeatsKnownStrategy =
-    (stageId === "9-1" && option.id === "same_strategy") ||
-    ((stageId === "9-4" || stageId === "10-4") && option.id.includes("repeat"))
-  if (runIndex > 1 && repeatsKnownStrategy) {
+  if ((stageId === "9-1" || stageId === "9-4" || stageId === "10-4") && runIndex > 1 && option.id.includes("repeat")) {
     detection += 22
     gain = Math.max(0, gain - 8)
     blocked = true
@@ -1890,9 +1886,8 @@ function createAdvancedTrial(stageId, option, index, context = {}) {
   }
 }
 
-function bestAdvancedTrial(trials, rankingMetric = "score") {
-  const metric = rankingMetric === "gain" ? "gain" : "score"
-  return trials.reduce((best, trial) => (!best || trial[metric] > best[metric] ? trial : best), null)
+function bestAdvancedTrial(trials) {
+  return trials.reduce((best, trial) => (!best || trial.score > best.score ? trial : best), null)
 }
 
 function createInitialAdvancedState(stageId) {
@@ -2041,14 +2036,10 @@ function addAdvancedTimeline(state, label, detail, kind = "system", runtimeInput
 
 function runSelectedAdvancedOption(stageId, state, definition) {
   const option = advancedOption(definition, state.selectedOptionId)
-  const existingTrial = state.runs[option.id]
-  if (existingTrial && definition.successMode !== "repeatSame") {
-    return existingTrial
-  }
   const trial = createAdvancedTrial(stageId, option, state.trialHistory.length + 1)
   state.runs[option.id] = trial
   state.trialHistory.push(trial)
-  state.bestTrial = bestAdvancedTrial(state.trialHistory, definition.rankingMetric)
+  state.bestTrial = bestAdvancedTrial(state.trialHistory)
   state.feedback = trial.blocked ? "防御反応により結果が抑えられました。" : "実行結果を記録しました。"
   state.nextFocus = trial.summary
   addAdvancedTimeline(state, option.label, `${trial.summary} / score ${trial.score}`, trial.blocked ? "anomaly" : "system", {
@@ -2079,10 +2070,9 @@ function runSelectedAdvancedOption(stageId, state, definition) {
 }
 
 function runAdvancedBatch(stageId, state, definition) {
-  if (state.compared) return
   state.trialHistory = definition.options.map((option, index) => createAdvancedTrial(stageId, option, index + 1))
   state.runs = Object.fromEntries(state.trialHistory.map((trial) => [trial.optionId, trial]))
-  state.bestTrial = bestAdvancedTrial(state.trialHistory, definition.rankingMetric)
+  state.bestTrial = bestAdvancedTrial(state.trialHistory)
   state.compared = true
   state.feedback = "候補をまとめて比較しました。"
   state.nextFocus = state.bestTrial ? `${state.bestTrial.label} が現在のベストです。` : "候補を確認してください。"
@@ -2110,10 +2100,6 @@ function runAdvancedStageAction(stageId, previousState, action, payload = {}) {
 
   if (action === "retry") {
     return createInitialAdvancedState(stageId)
-  }
-
-  if (state.success) {
-    return state
   }
 
   if (action === "select_advanced_option") {
@@ -2360,58 +2346,14 @@ function runAdvancedStageAction(stageId, previousState, action, payload = {}) {
     }
 
     if (definition.successMode === "roundLoop" || definition.successMode === "campaign") {
-      if (state.round >= definition.maxRounds) {
-        state.feedback = "ラウンド上限に到達しました。"
-        state.nextFocus = "同じ方針を続けず、防御ログに合わせた更新を選んでください。"
-        return state
-      }
       const option = advancedOption(definition, state.selectedOptionId)
       const trial = createAdvancedTrial(stageId, option, state.round + 1, { runIndex: state.round + 1 })
-      const defenderStateBefore = clone(state.defenderState)
       state.round += 1
       state.score += Math.max(0, trial.score)
       state.trialHistory.push(trial)
       state.bestTrial = bestAdvancedTrial(state.trialHistory)
-      state.defenderState = {
-        ...state.defenderState,
-        alertLevel: clamp(
-          Math.max(Number(state.defenderState.alertLevel || 1), 1 + Math.floor(trial.detection / 25)),
-          1,
-          5
-        ),
-        memory: Number(state.defenderState.memory || 0) + 1,
-        rateLimit: trial.blocked,
-        lastBlockReason: trial.blocked ? "adaptive defense" : "none",
-        lastScoreDelta: trial.score,
-        queue: trial.queue,
-        score: state.score,
-      }
-      addAdvancedTimeline(
-        state,
-        `Round ${state.round}`,
-        `${trial.label}: ${trial.summary}`,
-        trial.blocked ? "anomaly" : "system",
-        {
-          eventType: trial.blocked ? "defense.blocked" : "strategy.executed",
-          actor: "runtime",
-          result: trial.blocked ? "blocked" : "success",
-          severity: trial.blocked ? "warning" : "notice",
-          tags: ["campaign", ...(trial.blocked ? ["defense"] : ["strategy"])],
-          before: defenderStateBefore,
-          after: clone(state.defenderState),
-          metadata: {
-            gain: trial.gain,
-            detection: trial.detection,
-            queue: trial.queue,
-            latency: trial.latency,
-            scoreDelta: trial.score,
-            success: !trial.blocked,
-          },
-        }
-      )
-      const adaptedWithinRoundLimit =
-        definition.successMode === "roundLoop" && option.id === definition.bestOptionId && state.round >= 2
-      if (state.score >= definition.targetScore || adaptedWithinRoundLimit) {
+      addAdvancedTimeline(state, `Round ${state.round}`, `${trial.label}: ${trial.summary}`, trial.blocked ? "anomaly" : "system")
+      if (state.score >= definition.targetScore || (option.id === definition.bestOptionId && state.round >= 2)) {
         completeAdvancedStage(
           state,
           definition.successMode === "campaign"
@@ -2608,7 +2550,6 @@ function runAdvancedStageAction(stageId, previousState, action, payload = {}) {
   }
 
   if (action === "review_advanced_log") {
-    if (state.logReviewed) return state
     state.logReviewed = true
     state.feedback = "防御ログを確認しました。"
     state.nextFocus = "検知スコアが上がったタイミングとログの理由を見比べてください。"
@@ -2618,7 +2559,6 @@ function runAdvancedStageAction(stageId, previousState, action, payload = {}) {
 
   if (action === "save_advanced") {
     if (definition.successMode === "saveAndLoad") {
-      if (state.saved) return state
       state.saved = true
       state.feedback = "戦略をテンプレートとして保存しました。"
       state.nextFocus = "読み込むと再利用できることを確認できます。"
@@ -2626,11 +2566,8 @@ function runAdvancedStageAction(stageId, previousState, action, payload = {}) {
       return state
     }
 
-    const requiresEvaluatedResult = ["searchAndSave", "saveBest", "batchBest"].includes(definition.successMode)
-    if (requiresEvaluatedResult && !state.bestTrial) {
-      state.feedback = "先に候補を実行・比較してください。"
-      state.nextFocus = "実行結果がない状態では保存できません。"
-      return state
+    if (definition.successMode === "searchAndSave" && !state.bestTrial) {
+      runAdvancedBatch(stageId, state, definition)
     }
 
     const selectedIsBest = state.selectedOptionId === definition.bestOptionId || state.bestTrial?.optionId === definition.bestOptionId

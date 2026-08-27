@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security Learning Game</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="stage-header">
+        <div class="stage-heading">
+          <div id="stage-path" class="stage-path"></div>
+          <h1 id="stage-title" class="stage-title"></h1>
+          <p id="stage-goal" class="stage-goal"></p>
+        </div>
+        <div class="stage-progress-panel">
+          <div id="progress-label" class="progress-label"></div>
+          <div id="progress-dots" class="progress-dots"></div>
+          <button id="reset-progress" class="reset-progress">進行をリセット</button>
+        </div>
+      </header>
+
+      <section class="chapter-banner">
+        <div class="chapter-copy">
+          <div id="chapter-kicker" class="chapter-kicker"></div>
+          <div id="chapter-note" class="chapter-note"></div>
+        </div>
+        <div class="lab-lock">Search Console は第3章で解放中 / Hack Lab は第4章以降で解放予定</div>
+      </section>
+
+      <main class="main-grid">
+        <section class="panel mission-panel">
+          <h2 id="mission-title">今回やること</h2>
+          <div id="mission-card" class="mission-card"></div>
+          <div id="input-region" class="input-region"></div>
+        </section>
+
+        <section class="panel visual-panel">
+          <h2 id="visual-title">メイン表示</h2>
+          <div id="visual-region" class="visual-region"></div>
+          <div id="timeline-section" class="timeline-section">
+            <div id="timeline-heading" class="timeline-heading">タイムライン</div>
+            <div id="timeline-region" class="timeline-region"></div>
+          </div>
+        </section>
+
+        <aside class="panel result-panel">
+          <h2 id="result-title">結果と差分</h2>
+          <div id="result-region" class="result-region"></div>
+          <div id="hint-region" class="hint-region"></div>
+          <details class="detail-panel">
+            <summary>詳細メモ</summary>
+            <div id="detail-region" class="detail-region"></div>
+          </details>
+        </aside>
+      </main>
+
+      <footer class="action-bar">
+        <div id="feedback-region" class="feedback-region"></div>
+        <div id="action-buttons" class="action-buttons"></div>
+      </footer>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

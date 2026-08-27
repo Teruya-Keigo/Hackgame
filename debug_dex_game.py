@@ -675,6 +675,9 @@ class DexEngine:
             self.order_state[target_id] = "cancelled"
             self.cancelled_once.add(target_id)
             self._release_limit_funds(target)
+            self.orderbook[target.pair] = [
+                item for item in self.orderbook[target.pair] if item.order_id != target_id
+            ]
             self._log(f"[cancel] done target={target_id}")
             self._emit_event(
                 phase="engine",
@@ -770,10 +773,49 @@ class DexEngine:
         base, quote = self._split_pair(pair)
         trade_value = qty * s.price
 
-        # Bug: does not re-check cancelled after yield.
+        # Re-check after the scheduling point so a concurrent cancel or match
+        # cannot spend the same reservation twice.
         b_before = self.order_state.get(b.order_id, "unknown")
         s_before = self.order_state.get(s.order_id, "unknown")
         await asyncio.sleep(0)
+
+        b_current = self.order_state.get(b.order_id, "unknown")
+        s_current = self.order_state.get(s.order_id, "unknown")
+        if b_current != "open" or s_current != "open":
+            cancelled_during_match = (
+                b_current == "cancelled"
+                or s_current == "cancelled"
+                or b.order_id in self.cancelled_once
+                or s.order_id in self.cancelled_once
+            )
+            if cancelled_during_match:
+                self.bug_flags["race"] += 1
+                self._log(
+                    f"[race-blocked] stale match rejected buy={b.order_id}:{b_current} "
+                    f"sell={s.order_id}:{s_current}"
+                )
+                self._emit_event(
+                    phase="engine",
+                    actor="matcher",
+                    action="anomaly",
+                    target=pair,
+                    result="cancel/race を遮断",
+                    order=b,
+                    summary=f"{pair} の約定直前にキャンセル競合を検出し、二重決済を止めました。",
+                    anomaly=True,
+                    details={
+                        "buy_state_before": b_before,
+                        "sell_state_before": s_before,
+                        "buy_state_after_yield": b_current,
+                        "sell_state_after_yield": s_current,
+                    },
+                )
+            else:
+                self._log(
+                    f"[match] stale match skipped buy={b.order_id}:{b_current} "
+                    f"sell={s.order_id}:{s_current}"
+                )
+            return
 
         self.reserved[b.user_id][quote] -= trade_value
         self.balances[b.user_id][base] += qty
@@ -789,21 +831,6 @@ class DexEngine:
             f"s_state={self.order_state.get(s.order_id)}"
         )
 
-        race_triggered = False
-        if b_before == "cancelled" or s_before == "cancelled":
-            race_triggered = True
-            self.bug_flags["race"] += 1
-            self._log(
-                f"[race-bug] cancelled-before-match detected buy_before={b_before} sell_before={s_before}"
-            )
-        elif b.order_id in self.cancelled_once or s.order_id in self.cancelled_once:
-            race_triggered = True
-            self.bug_flags["race"] += 1
-            self._log(
-                f"[race-bug] cancel-history-match detected buy_cancelled={b.order_id in self.cancelled_once} "
-                f"sell_cancelled={s.order_id in self.cancelled_once}"
-            )
-
         self._emit_event(
             phase="engine",
             actor="matcher",
@@ -812,7 +839,7 @@ class DexEngine:
             result="約定",
             order=b,
             summary=f"{pair} で {b.order_id} と {s.order_id} が約定しました。",
-            anomaly=race_triggered,
+            anomaly=False,
             details={
                 "buy_order_id": b.order_id,
                 "sell_order_id": s.order_id,
@@ -822,19 +849,6 @@ class DexEngine:
                 "sell_state_before": s_before,
             },
         )
-
-        if race_triggered:
-            self._emit_event(
-                phase="engine",
-                actor="matcher",
-                action="anomaly",
-                target=pair,
-                result="cancel/race",
-                order=b,
-                summary=f"{pair} の約定時にキャンセル競合が残っていました。",
-                anomaly=True,
-                details={"buy_state_before": b_before, "sell_state_before": s_before},
-            )
 
         # Remove matched orders if present.
         self.orderbook[pair] = [o for o in orders if o.order_id not in (b.order_id, s.order_id)]
@@ -863,24 +877,92 @@ class DexEngine:
         self.event_seq = 0
         self.initial_state = _build_state_snapshot(self)
 
-        raw = json.loads(batch_json)
+        def reject_non_finite_json(value: str) -> None:
+            raise ValueError(f"non-finite JSON number is not allowed: {value}")
+
+        raw = json.loads(batch_json, parse_constant=reject_non_finite_json)
+        if not isinstance(raw, dict):
+            raise ValueError("batch payload must be a JSON object")
+
         incoming = raw.get("orders", [])
+        if not isinstance(incoming, list):
+            raise ValueError("orders must be an array")
+
+        try:
+            leverage_value = float(leverage)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("leverage must be a finite number") from exc
+        if not math.isfinite(leverage_value):
+            raise ValueError("leverage must be a finite number")
+
         parsed: List[Order] = []
+        seen_order_ids: Set[str] = set()
 
         for i, item in enumerate(incoming):
+            if not isinstance(item, dict):
+                raise ValueError(f"orders[{i}] must be an object")
+
+            order_id = item.get("order_id", f"o{i}")
+            if not isinstance(order_id, str) or not order_id:
+                raise ValueError(f"orders[{i}].order_id must be a non-empty string")
+            if order_id in seen_order_ids:
+                raise ValueError(f"duplicate order_id: {order_id}")
+            seen_order_ids.add(order_id)
+
+            try:
+                amount = float(item.get("amount", 0.0))
+                price = float(item.get("price", 1.0))
+                gas_price = float(item.get("gas_price", 0.0))
+                timestamp = int(item.get("timestamp", 0))
+                nonce = int(item.get("nonce", i))
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValueError(f"orders[{i}] contains an invalid numeric value") from exc
+
+            for field_name, value in (
+                ("amount", amount),
+                ("price", price),
+                ("gas_price", gas_price),
+            ):
+                if not math.isfinite(value):
+                    raise ValueError(f"orders[{i}].{field_name} must be finite")
+            if amount < 0:
+                raise ValueError(f"orders[{i}].amount must be non-negative")
+
+            user_id = item.get("user_id", "player")
+            kind = item.get("kind", "market")
+            side = item.get("side", "buy")
+            pair = item.get("pair", "A/B")
+            target_order_id = item.get("target_order_id")
+            for field_name, value in (
+                ("user_id", user_id),
+                ("kind", kind),
+                ("side", side),
+                ("pair", pair),
+            ):
+                if not isinstance(value, str) or not value:
+                    raise ValueError(f"orders[{i}].{field_name} must be a non-empty string")
+            if target_order_id is not None and not isinstance(target_order_id, str):
+                raise ValueError(f"orders[{i}].target_order_id must be a string")
+            if kind in {"limit", "market"} and side not in {"buy", "sell"}:
+                raise ValueError(f"orders[{i}].side must be buy or sell")
+            if kind in {"limit", "market"} and pair not in PAIRS:
+                raise ValueError(f"orders[{i}].pair is not supported: {pair}")
+            if kind == "limit" and price <= 0:
+                raise ValueError(f"orders[{i}].price must be positive")
+
             parsed.append(
                 Order(
-                    order_id=item.get("order_id", f"o{i}"),
-                    user_id=item.get("user_id", "player"),
-                    kind=item.get("kind", "market"),
-                    side=item.get("side", "buy"),
-                    pair=item.get("pair", "A/B"),
-                    amount=float(item.get("amount", 0.0)),
-                    price=float(item.get("price", 1.0)),
-                    timestamp=int(item.get("timestamp", 0)),
-                    nonce=int(item.get("nonce", i)),
-                    gas_price=float(item.get("gas_price", 0.0)),
-                    target_order_id=item.get("target_order_id"),
+                    order_id=order_id,
+                    user_id=user_id,
+                    kind=kind,
+                    side=side,
+                    pair=pair,
+                    amount=amount,
+                    price=price,
+                    timestamp=timestamp,
+                    nonce=nonce,
+                    gas_price=gas_price,
+                    target_order_id=target_order_id,
                 )
             )
 
@@ -929,7 +1011,7 @@ class DexEngine:
                     details={"side": o.side, "amount": o.amount, "price": o.price, "gas_price": o.gas_price},
                 )
                 if o.kind == "limit":
-                    tasks.append(asyncio.create_task(self._place_limit(o, leverage=leverage)))
+                    tasks.append(asyncio.create_task(self._place_limit(o, leverage=leverage_value)))
                 elif o.kind == "market":
                     tasks.append(asyncio.create_task(self._place_market(o)))
                 elif o.kind == "cancel":
